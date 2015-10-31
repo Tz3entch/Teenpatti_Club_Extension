@@ -207,7 +207,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*      */     }
 /*  207 */     return commission;
 /*      */   }
-/*      */   
+/*      */   //TODO getNpcAvatar
 /*      */ 
 /*      */   public float getPlayerInpaly(String player)
 /*      */   {
@@ -231,7 +231,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*      */     }
 /*  231 */     return chips;
 /*      */   }
-/*      */   
+/*      */   //TODO getNpcInplay
 /*      */ 
 /*      */ 
 /*      */ 

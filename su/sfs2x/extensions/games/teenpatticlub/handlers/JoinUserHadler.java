@@ -43,7 +43,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*     */     {
 /*     */ 
 /*     */ 
-/*  46 */       int tableId = params.getInt("tableId").intValue();
+/*  46 */       int tableId = params.getInt("tableId");
 /*  47 */       tableBean = Appmethods.getTableBean(tableId);
 /*     */       
 /*  49 */       if (tableBean != null)

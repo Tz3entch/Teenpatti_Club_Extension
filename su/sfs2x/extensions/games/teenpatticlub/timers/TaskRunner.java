@@ -45,7 +45,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*    */         }
 /*    */       }
 /*    */      // || userToRemove.isNpc() == true
-/* 47 */       if (userToRemove != null)
+/* 47 */       if (userToRemove != null&&!userToRemove.isNpc())
 /*    */       {
 /* 49 */         Commands.appInstance.cdUser.pauseTaskRunner = true;
 /* 50 */         Appmethods.showLog("TaskRunner Remove user " + userToRemove.getName());
