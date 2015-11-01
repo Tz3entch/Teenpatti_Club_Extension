@@ -25,7 +25,16 @@ public class NPCManager {
     Random rand = new Random();
     Main app;
     List <Integer> npcsForRoom;
-    int[] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
+    List<String> npcNames;
+    Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
+    String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
+                        "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
+                        "Harley", "Harper", "Hayden", "Hunter", "Jaiden", "Jamie", "Jaylen",
+                        "Jesse", "Jordan", "Justice", "Kai", "Kelly", "Kelsey", "Kendall",
+                        "Kennedy", "Lane", "Logan", "Mackenzie", "Madison", "Marley", "Mason",
+                        "Morgan", "Parker", "Peyton", "Piper", "Quinn", "Reagan", "Reese",
+                        "Riley", "Rowan", "Ryan", "Shane", "Shawn", "Sydney", "Taylor",
+                        "Tristan"};
 
 
 
@@ -37,19 +46,35 @@ public class NPCManager {
     public void init() {
         Appmethods.showLog("!!!!!!!!!!!!!INIT NPC NAMAGER!!!!!!!!!!!!!");
         npcsForRoom = (List)new ArrayList<>((Arrays.asList(ar)));
+        npcNames = (List)new ArrayList<>(Arrays.asList(arNames));
         Collections.shuffle(npcsForRoom, rand);
-
-        String robotName = "OLOLO1488";
-        try {
-            User npcUser = app.getApi().createNPC(robotName, app.getParentZone(), true);
-            JoinNpcToRoom(npcUser, 4);
-        } catch (SFSException e) {
-            e.printStackTrace();
-        }
+        Collections.shuffle(npcNames, rand);
+        FillRooms();
+//        String robotName = "OLOLO1488";
+//        try {
+//            User npcUser = app.getApi().createNPC(robotName, app.getParentZone(), true);
+//            JoinNpcToRoom(npcUser, 4);
+//        } catch (SFSException e) {
+//            e.printStackTrace();
+//        }
     }
+
     private void FillRooms() {
 
         Appmethods.showLog("**********DISTRIBUTE NPC");
+        try {
+            List<User> npcUserList = FetchNpcs(npcNames);
+            int n=0;
+            for (int i = 1; i < ar.length+1; i++) {
+                for (int j = 0; j < npcsForRoom.get(i-1); j++) {
+                    JoinNpcToRoom(npcUserList.get(n), i, j);
+                    n++;
+                }
+
+            }
+        } catch (SFSException e) {
+            e.printStackTrace();
+        }
 //
 //        try {
 //
@@ -59,7 +84,7 @@ public class NPCManager {
 //		}
     }
 
-    private void JoinNpcToRoom(User npcUser, int tableId) throws SFSException {
+    private void JoinNpcToRoom(User npcUser, int tableId, int pos) throws SFSException {
         String player = npcUser.getName();
         String type = "Public";
         GameBean gameBean = null;
@@ -120,10 +145,8 @@ public class NPCManager {
         }
         if (gameBean != null) {
 
-            int pos = 1;
 
-
-            if ((((String) gameBean.getPlayers().get(pos)).equals("null")) && (!Appmethods.isUserExist(gameBean.getPlayers(), player))) {
+            if ((( gameBean.getPlayers().get(pos)).equals("null")) && (!Appmethods.isUserExist(gameBean.getPlayers(), player))) {
 
                 gameBean.addPlayer(pos, npcUser.getName());
 
@@ -192,12 +215,12 @@ public class NPCManager {
 //     }
 
     }
-    private List<User> FetchNPC(List<String>npcNames) throws SFSException  {
+    private List<User> FetchNpcs(List<String>npcNames) throws SFSException  {
         Appmethods.showLog("**********FetchNPC************");
         List<User> result = new ArrayList<>();
         User npcUser;
-        for(String npcName :npcNames) {
-             npcUser = app.getApi().createNPC(npcName, app.getParentZone(), true);
+        for(int i=0; i<29; i++) {
+             npcUser = app.getApi().createNPC(npcNames.get(i), app.getParentZone(), true);
              result.add(npcUser);
             Appmethods.showLog("FetchNPC: NPC "+npcUser.getName()+" created.");
         }
