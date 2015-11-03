@@ -1,18 +1,13 @@
 package su.sfs2x.extensions.games.teenpatticlub.npcs;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-import com.smartfoxserver.bitswarm.sessions.Session;
 import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.SFSException;
 import su.sfs2x.extensions.games.teenpatticlub.bean.GameBean;
-import su.sfs2x.extensions.games.teenpatticlub.bean.NpcBean;
 import su.sfs2x.extensions.games.teenpatticlub.bean.PlayerBean;
 import su.sfs2x.extensions.games.teenpatticlub.bean.TableBean;
 import su.sfs2x.extensions.games.teenpatticlub.bsn.UpdateLobbyBsn;
@@ -24,8 +19,10 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 public class NPCManager {
     Random rand = new Random();
     Main app;
+    int nameCount=0;
     List <Integer> npcsForRoom;
-    List<String> npcNames;
+    List<String> unusedNpcNames;
+    List<String> usedNpcNames;
     Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
     String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
                         "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
@@ -40,20 +37,20 @@ public class NPCManager {
 
     public NPCManager() {
         app = Commands.appInstance;
-        init();
     }
 
     public void init() {
         Appmethods.showLog("!!!!!!!!!!!!!INIT NPC NAMAGER!!!!!!!!!!!!!");
         npcsForRoom = (List)new ArrayList<>((Arrays.asList(ar)));
-        npcNames = (List)new ArrayList<>(Arrays.asList(arNames));
+        unusedNpcNames = (List)new ArrayList<>(Arrays.asList(arNames));
+        usedNpcNames = (List)new ArrayList<>();
         Collections.shuffle(npcsForRoom, rand);
-        Collections.shuffle(npcNames, rand);
+        Collections.shuffle(unusedNpcNames, rand);
         FillRooms();
 //        String robotName = "OLOLO1488";
 //        try {
 //            User npcUser = app.getApi().createNPC(robotName, app.getParentZone(), true);
-//            JoinNpcToRoom(npcUser, 4);
+//            joinNpcToRoom(npcUser, 4);
 //        } catch (SFSException e) {
 //            e.printStackTrace();
 //        }
@@ -63,12 +60,12 @@ public class NPCManager {
 
         Appmethods.showLog("**********DISTRIBUTE NPC");
         try {
-            List<User> npcUserList = FetchNpcs(npcNames);
-            int n=0;
+            List<User> npcUserList = FetchNpcs(unusedNpcNames);
+            nameCount=0;
             for (int i = 1; i < ar.length+1; i++) {
                 for (int j = 0; j < npcsForRoom.get(i-1); j++) {
-                    JoinNpcToRoom(npcUserList.get(n), i, j);
-                    n++;
+                    joinNpcToRoom(npcUserList.get(nameCount), i, j);
+                    nameCount++;
                 }
 
             }
@@ -84,7 +81,7 @@ public class NPCManager {
 //		}
     }
 
-    private void JoinNpcToRoom(User npcUser, int tableId, int pos) throws SFSException {
+    private void joinNpcToRoom(User npcUser, int tableId, int pos) throws SFSException {
         String player = npcUser.getName();
         String type = "Public";
         GameBean gameBean = null;
@@ -119,8 +116,8 @@ public class NPCManager {
                         isGameStarted = true;
                     }
                 }
-                
                 Appmethods.joinRoom(npcUser, room);
+                npcUser.setPlayerId( rand.nextInt(1000), room);
                 PlayerBean playerBean = new PlayerBean(player);
                 playerBean.setInplay(15000.10f);
                 playerBean.setStartInplay(15000.10f);
@@ -178,7 +175,7 @@ public class NPCManager {
                     ulBsn.updatePrivateTableLobby("Update", tBean);
                     ulBsn = null;
 
-                    PlayerBean pBean = (PlayerBean) gameBean.getPlayerBeenList().get(player);
+                    PlayerBean pBean = gameBean.getPlayerBeenList().get(player);
 
                     pBean.setInplay(pBean.getInplay() - 30.0F);
 
@@ -220,11 +217,89 @@ public class NPCManager {
         List<User> result = new ArrayList<>();
         User npcUser;
         for(int i=0; i<29; i++) {
-             npcUser = app.getApi().createNPC(npcNames.get(i), app.getParentZone(), true);
+             npcUser = app.getApi().createNPC(npcNames.get(nameCount), app.getParentZone(), true);
+             nameCount++;
              result.add(npcUser);
             Appmethods.showLog("FetchNPC: NPC "+npcUser.getName()+" created.");
         }
         return result;
     }
 
+    private static List<User> npcsInRoom(Room room) {
+        List<User> players = room.getPlayersList();
+        List<User> result = new ArrayList<>();
+        if (players.size() > 0) {
+            for (User player : players) {
+                if (player.isNpc()) {
+                    result.add(player);
+                }
+            }
+        }
+        return result;
+    }
+
+    private static List<User> realPlayersInRoom(Room room) {
+        List<User> players = room.getPlayersList();
+        List<User> result = new ArrayList<>();
+        if (players.size() > 0) {
+            for (User player : players) {
+                if (!player.isNpc()) {
+                    result.add(player);
+                }
+            }
+        }
+        return result;
+    }
+
+
+    public void checkRooms() {
+        Appmethods.showLog("**********checkRooms started************");
+        GameBean gameBean = null;
+        Room room = null;
+        TableBean tableBean;
+        PlayerBean pb;
+        if (nameCount>usedNpcNames.size()) {
+            nameCount=0;
+        }
+        for (int i = 1; i < 14; i++) {
+            tableBean = Appmethods.getTableBean(i);
+            gameBean = Appmethods.getGameBean(tableBean.get_roomId());
+            room = Appmethods.getRoomByName(tableBean.get_roomId());
+            List<User> npcs = npcsInRoom(room);
+            List<User> realPlayers = realPlayersInRoom(room);
+            List<User> users = room.getPlayersList();
+            if (room.isFull() && npcs.size() > 0) {
+                room.removeUser(npcs.get(0));
+                app.cdUser.removeConnectedUser(npcs.get(0));
+                Appmethods.showLog("********** NPCManager: npc removed!************");
+            }
+            ConcurrentHashMap<String, PlayerBean> playerBeans = gameBean.getPlayerBeenList();
+            for (User npc: npcs) {
+                pb = playerBeans.get(npc.getName());
+                if (pb.getTotalHands()>1+rand.nextInt(3)) {
+                    room.removeUser(npc);
+                    app.cdUser.removeConnectedUser(npc);
+                    Appmethods.showLog("********** NPCManager: npc removed!************");
+                }
+            }
+
+            if (users.size() < npcsForRoom.get(i - 1)) {
+                try {
+                    User npcUser = app.getApi().createNPC(unusedNpcNames.get(rand.nextInt(unusedNpcNames.size() - 1)), app.getParentZone(), true);
+                    ArrayList<String> pos = gameBean.getPlayers();
+                    ArrayList<Integer> list = new ArrayList<>();
+                    for (String posit : pos) {
+                        if (posit.equals("null")) {
+                            list.add(pos.indexOf(posit));
+                        }
+                    }
+                    joinNpcToRoom(npcUser, i, list.get(0));
+                    Appmethods.showLog("********** NPCManager: npc added!************");
+                } catch (SFSException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
 }
