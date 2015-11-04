@@ -100,7 +100,7 @@ import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 /*     */     
 /* 101 */     for (TableBean bean : Commands.appInstance.publicTables)
 /*     */     {
-/* 103 */       if (tableId == bean.get_id().intValue())
+/* 103 */       if (tableId == bean.get_id())
 /*     */       {
 /* 105 */         tableBean = bean;
 /* 106 */         break;
@@ -187,8 +187,8 @@ import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 /*     */ 
 /*     */ 
 /*     */ 
-/* 190 */         if ((tableBean.get_id().intValue() == bean.getTableBeanId()) && 
-/* 191 */           (!bean.getRoomId().equals(gameBean.getRoomId())) && 
+/* 190 */         if ((tableBean.get_id() == bean.getTableBeanId()) &&
+/* 191 */           (!bean.getRoomId().equals(gameBean.getRoomId()))  &&
 /* 192 */           (bean.getJoinedPlayers() != bean.getMaxNoOfPlayers()))
 /*     */         {
 /* 194 */           bool = true;

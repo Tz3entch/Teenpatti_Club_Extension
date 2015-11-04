@@ -34,10 +34,8 @@ public class ServerReadyHandler extends BaseServerEventHandler{
         {
         	Appmethods.showLog("**************ServerReadyHandler*************");
         	Appmethods.showLog("3patticlub Server Started");
-//            NPCManager npm = new NPCManager();
-//            npm.init();
-//            Timer timer = new Timer();
-//            timer.schedule(new CheckRoomTimer(npm), 30000, 60000);
+            NPCManager npm = new NPCManager();
+            npm.init();
         }
 
     }
