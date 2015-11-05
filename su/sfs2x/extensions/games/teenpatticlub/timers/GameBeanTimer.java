@@ -1,7 +1,8 @@
 /*     */ package su.sfs2x.extensions.games.teenpatticlub.timers;
 /*     */ 
 /*     */ import com.smartfoxserver.v2.api.ISFSApi;
-/*     */ import com.smartfoxserver.v2.entities.Room;
+/*     */ import com.smartfoxserver.v2.api.SFSApi;
+import com.smartfoxserver.v2.entities.Room;
 /*     */ import com.smartfoxserver.v2.entities.User;
 /*     */ import com.smartfoxserver.v2.entities.data.ISFSObject;
 /*     */ import com.smartfoxserver.v2.entities.data.SFSObject;
@@ -113,7 +114,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*     */       }
 /* 114 */       else if (this.command.equals("CloseGame"))
 /*     */       {
-/*     */ 
+/*     */
 /* 117 */         for (int i = 0; i < gameBean.getPlayers().size(); i++)
 /*     */         {
 /* 119 */           if (!((String)gameBean.getPlayers().get(i)).equals("null"))
@@ -153,10 +154,23 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /* 153 */           Commands.appInstance.getApi().leaveRoom((User)room.getUserList().get(i), room);
 /*     */         }
 /*     */         
-/*     */ 
-/*     */ 
-/* 158 */         Appmethods.removeGameBean(gameBean);
-/*     */       }
+/*     */   int n = 0;
+            List<User> players = room.getPlayersList();
+            if (players.size() > 0) {
+                for (User player : players) {
+                    if (player.isNpc()) {
+                        n++;
+                    }
+                }
+            }
+            if (n == 0) {
+/*     */
+                System.out.println("================CLOSING GAME FROM GAMEBEANTIMER 157 ====================");
+/* 158 */
+                Appmethods.removeGameBean(gameBean);
+            }
+/*     */
+        }
 /*     */     }
 /*     */   }
 /*     */ }

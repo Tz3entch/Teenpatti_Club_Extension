@@ -24,8 +24,8 @@ public class NPCManager {
     List <Integer> npcsForRoom;
     List<String> unusedNpcNames;
     List<String> usedNpcNames;
-    Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
-//    Integer [] ar =   {4,0,0,0,0,0,0,0,0,0,0,0,0};
+ //   Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
+    Integer [] ar =   {2,0,0,0,0,0,0,0,0,0,0,0,0};
     String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
                         "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
                         "Harley", "Harper", "Hayden", "Hunter", "Jaiden", "Jamie", "Jaylen",
@@ -50,14 +50,7 @@ public class NPCManager {
         Collections.shuffle(unusedNpcNames, rand);
         FillRooms();
         Timer timer = new Timer();
-        timer.schedule(new CheckRoomTimer(this), 60000, 60000);
-//        String robotName = "OLOLO1488";
-//        try {
-//            User npcUser = app.getApi().createNPC(robotName, app.getParentZone(), true);
-//            joinNpcToRoom(npcUser, 4);
-//        } catch (SFSException e) {
-//            e.printStackTrace();
-//        }
+        timer.schedule(new CheckRoomTimer(this), 60000, 120000);
     }
 
     private void FillRooms() {
@@ -263,44 +256,45 @@ public class NPCManager {
         Room room = null;
         TableBean tableBean;
         PlayerBean pb;
-        if (nameCount>usedNpcNames.size()) {
-            nameCount=0;
+        if (nameCount > usedNpcNames.size()) {
+            nameCount = 0;
         }
-//        ArrayList<TableBean> publicTables = Commands.appInstance.publicTables;
-//        ConcurrentHashMap<String, GameBean> gameBeanMap = Commands.appInstance.getGames();
-//        Iterator it = gameBeanMap.entrySet().iterator();
-//        while (it.hasNext()) {
-//            ConcurrentHashMap.Entry pair = (ConcurrentHashMap.Entry)it.next();
-//            System.out.println(pair.getKey() + " = " + pair.getValue());
-//             gameBean = (GameBean)pair.getValue();
-//        }
-        for (int i = 1; i < 14; i++) {
-            tableBean = Appmethods.getTableBean(i);
-            gameBean = Appmethods.getGameBean(tableBean.get_roomId());
+        ArrayList<TableBean> publicTables = Commands.appInstance.publicTables;
+        ConcurrentHashMap<String, GameBean> gameBeanMap = Commands.appInstance.getGames();
+        for (Object o : gameBeanMap.entrySet()) {
+            ConcurrentHashMap.Entry pair = (ConcurrentHashMap.Entry) o;
+            gameBean = (GameBean) pair.getValue();
             //room = Appmethods.getRoomByName(tableBean.get_roomId());
             room = Appmethods.getRoomByName(gameBean.getRoomId());
-            if (room!=null) {
+
+            if (room != null) {
                 List<User> npcs = npcsInRoom(room);
-                List<User> realPlayers = realPlayersInRoom(room);
-                List<User> users = room.getPlayersList();
-                if (users.size()>=5 && npcs.size()>0) {
-                    room.removeUser(npcs.get(0));
+                List<User> users = room.getUserList();
+                if (gameBean.getPlayerBeenList().size() >= 3 && npcs.size() > 0) {
+                    String name = npcs.get(0).getName();
+                    gameBean.getPlayerBeenList().get(npcs.get(0).getName()).setActive(false);
+                    Appmethods.showLog("********** NPCManager: npc "+ npcs.get(0).getName()+ " will be removed! Reason: room is full!************");
                     app.cdUser.removeConnectedUser(npcs.get(0));
-                    Appmethods.showLog("********** NPCManager: npc removed! Reason: Room is full!************");
+                    npcs.remove(npcs.get(0));
                     System.out.println("*****NPC REMOVED****");
+
                 }
                 ConcurrentHashMap<String, PlayerBean> playerBeans = gameBean.getPlayerBeenList();
-                for (User npc : npcs) {
-                    pb = playerBeans.get(npc.getName());
-                    if (pb.getTotalHands() > (1+rand.nextInt(3))) {
-                        room.removeUser(npc);
-                        app.cdUser.removeConnectedUser(npc);
-                        Appmethods.showLog("********** NPCManager: npc removed! Reason: Played enough hands!************");
-                        System.out.println("*****NPC REMOVED****");
+                if (npcs.size()>0) {
+                    for (User npc : npcs) {
+                        pb = playerBeans.get(npc.getName());
+                        if (pb.getTotalHands() > (1 + rand.nextInt(3)) && gameBean.getPlayerBeenList().size() > 1) {
+                            gameBean.getPlayerBeenList().get(npc.getName()).setActive(false);
+                            Appmethods.showLog("********** NPCManager: npc " + npc.getName() + " removed! Reason: Played enough hands!************");
+                            app.cdUser.removeConnectedUser(npc);
+                            npcs.remove(npc);
+                            System.out.println("*****NPC REMOVED****");
+
+                        }
                     }
                 }
 
-                if (users.size() < npcsForRoom.get(i - 1)) {
+                if (gameBean.getPlayerBeenList().size() < npcsForRoom.get(gameBean.getTableBeanId() - 1)) {
                     try {
                         User npcUser = app.getApi().createNPC(unusedNpcNames.get(rand.nextInt(unusedNpcNames.size() - 1)), app.getParentZone(), true);
                         ArrayList<String> pos = gameBean.getPlayers();
@@ -310,8 +304,9 @@ public class NPCManager {
                                 list.add(pos.indexOf(posit));
                             }
                         }
-                        joinNpcToRoom(npcUser, i, list.get(0));
-                        Appmethods.showLog("********** NPCManager: npc added!************");
+                        joinNpcToRoom(npcUser, gameBean.getTableBeanId(), list.get(0));
+                        //Appmethods.updateGameBeanUpdateLobby(gameBean, room);
+                        Appmethods.showLog("********** NPCManager: npc "+npcUser.getName()+" added!************");
                         System.out.println("*****NPC ADDED****");
                     } catch (SFSException e) {
                         e.printStackTrace();
@@ -319,6 +314,6 @@ public class NPCManager {
                 }
             }
         }
-//        it.remove();
+//      it.remove();
     }
 }

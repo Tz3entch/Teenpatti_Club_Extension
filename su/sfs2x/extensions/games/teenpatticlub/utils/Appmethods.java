@@ -323,6 +323,7 @@ import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 /*     */ 
 /* 324 */       if (room.getUserList().size() == 0)
 /*     */       {
+                  System.out.println("================CLOSING GAME FROM APPMETHODS 328====================");
 /* 326 */         removeGameBean(gameBean);
 /* 327 */         if (gameBean.getGameType().equals("Private"))
 /*     */         {
@@ -352,8 +353,18 @@ import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 /*     */       
 /*     */     }
 /* 354 */     else if (gameBean.getJoinedPlayers() == 1)
-/*     */     {
-/*     */ 
+/*     */     { int n = 0;   ///////////////////////////////this fixes remove 1 npc in room problem
+        room = Appmethods.getRoomByName(gameBean.getRoomId());
+        List<User> players = room.getPlayersList();
+        if (players.size() > 0) {
+            for (User player : players) {
+                if (player.isNpc()) {
+                    n++;
+                }
+            }
+        }
+
+/*     */      if (n == 0)  {
 /* 357 */       gameBean.setGameGenerating(false);
 /* 358 */       gameBean.stopTimer();
 /* 359 */       gameBean.setStarted(false);
@@ -369,7 +380,7 @@ import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 /* 369 */         ulBsn.updatePrivateTableLobby("Update", tBean);
 /* 370 */         ulBsn = null;
 /*     */       }
-/*     */       
+/*     */      }
 /*     */ 
 /*     */     }
 /* 375 */     else if (gameBean.getGameType().equals("Private"))

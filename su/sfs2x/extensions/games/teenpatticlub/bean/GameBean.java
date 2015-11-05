@@ -445,7 +445,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 
      removeDisconnectedUsers();
      removeInsufficientAmountUsers();
-//       removeTimeUpUsers(); ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    //   removeTimeUpUsers(); ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
      if (getJoinedPlayers() >= 2)
      {
@@ -501,17 +501,30 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
          }
 
 
-         if (room.getUserList().size() == 0) {
+         if (getPlayerBeenList().size() == 0) {  //////////////////////////// changed from get UserList.size //getPlayers().size()
+             System.out.println("================CLOSING GAME FROM GAMEBEANJAVA 505====================");
            Appmethods.removeGameBean(this);
          }
          else {
+
            startTimer(5, "CloseGame");
          }
 
-       }
-       else
-       {
-         startTimer(60, "CloseGame");
+       } else {
+           int n = 0;
+           Room room = Appmethods.getRoomByName(getRoomId());
+           List<User> players = room.getPlayersList();
+           if (players.size() > 0) {
+               for (User player : players) {
+                   if (player.isNpc()) {
+                       n++;
+                   }
+               }
+           }
+           if (n == 0) {
+               System.out.println("================CLOSING GAME FROM GAMEBEANJAVA 524====================");
+               startTimer(60, "CloseGame");
+           }
        }
      }
 
