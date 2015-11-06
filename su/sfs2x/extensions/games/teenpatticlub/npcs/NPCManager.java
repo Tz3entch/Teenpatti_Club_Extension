@@ -24,8 +24,8 @@ public class NPCManager {
     List <Integer> npcsForRoom;
     List<String> unusedNpcNames;
     List<String> usedNpcNames;
- //   Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
-    Integer [] ar =   {2,0,0,0,0,0,0,0,0,0,0,0,0};
+    Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
+//    Integer [] ar =   {2,0,0,0,0,0,0,0,0,0,0,0,0};
     String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
                         "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
                         "Harley", "Harper", "Hayden", "Hunter", "Jaiden", "Jamie", "Jaylen",
@@ -270,7 +270,7 @@ public class NPCManager {
             if (room != null) {
                 List<User> npcs = npcsInRoom(room);
                 List<User> users = room.getUserList();
-                if (gameBean.getPlayerBeenList().size() >= 3 && npcs.size() > 0) {
+                if (gameBean.getPlayerBeenList().size() >= 5 && npcs.size() > 0) {
                     String name = npcs.get(0).getName();
                     gameBean.getPlayerBeenList().get(npcs.get(0).getName()).setActive(false);
                     Appmethods.showLog("********** NPCManager: npc "+ npcs.get(0).getName()+ " will be removed! Reason: room is full!************");
