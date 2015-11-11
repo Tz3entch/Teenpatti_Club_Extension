@@ -15,11 +15,11 @@ import com.smartfoxserver.v2.db.IDBManager;
 /*      */ import java.text.DateFormat;
 /*      */ import java.text.ParseException;
 /*      */ import java.text.SimpleDateFormat;
-/*      */ import java.util.ArrayList;
-/*      */ import java.util.Calendar;
-/*      */ import java.util.Date;
-/*      */ import java.util.Enumeration;
-/*      */ import java.util.TimeZone;
+/*      */ import java.util.*;
+/*      */
+/*      */
+/*      */
+/*      */
 /*      */ import java.util.concurrent.ConcurrentHashMap;
 import su.sfs2x.extensions.games.teenpatticlub.bean.GameBean;
 import su.sfs2x.extensions.games.teenpatticlub.bean.GameRoundBean;
@@ -1634,7 +1634,54 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /* 1599 */       Appmethods.showSQLLog("SQLProxyError >>  serverRestartedCloseGames >> :" + e.toString());
 /*      */     }
 /*      */   }
+
+    public LinkedList<String> getNpcNames()
+/*      */   {
+/*  739 */     String sql = "select npc_users.npc_name from npc_users";
+/*  740 */     LinkedList<String> games = new LinkedList<>();
+/*      */     try
+/*      */     {
+/*  743 */       PreparedStatement stmt = this.con.prepareStatement(sql);
+/*  744 */
+/*  745 */       ResultSet res = stmt.executeQuery();
+/*  746 */       while (res.next())
+/*      */       {
+/*  748 */         games.add(res.getString("npc_name"));
+/*      */       }
+/*  750 */       res.close();
+/*  751 */       stmt.close();
+/*      */     }
+/*      */     catch (SQLException e)
+/*      */     {
+/*  755 */       System.out.println("SQLProxyError >>  getCurrentRunningGames  >> :" + e.toString());
+/*      */     }
+/*  757 */     return games;
+/*      */   }
+
+    public ArrayList<Integer> getNpcforRoom()
+/*      */   {
+/*  739 */     String sql = "select npc_for_room.room from npc_for_room";
+/*  740 */     ArrayList<Integer> result = new ArrayList<>();
+/*      */     try
+/*      */     {
+/*  743 */       PreparedStatement stmt = this.con.prepareStatement(sql);
+/*  744 */
+/*  745 */       ResultSet res = stmt.executeQuery();
+/*  746 */       while (res.next())
+/*      */       {
+/*  748 */         result.add(res.getInt("room"));
+/*      */       }
+/*  750 */       res.close();
+/*  751 */       stmt.close();
+/*      */     }
+/*      */     catch (SQLException e)
+/*      */     {
+/*  755 */       System.out.println("SQLProxyError >>  getCurrentRunningGames  >> :" + e.toString());
+/*      */     }
+/*  757 */     return result;
+/*      */   }
 /*      */ }
+/*      */
 
 
 /* Location:              /Users/yuggupta/Desktop/teenpathiExtension.jar!/su/sfs2x/extensions/games/teenpathi/proxy/SQLProxy.class

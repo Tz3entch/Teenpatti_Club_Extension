@@ -10,13 +10,18 @@
  import java.util.ArrayList;
  import java.util.Enumeration;
  import java.util.List;
+ import java.util.Random;
  import java.util.concurrent.ConcurrentHashMap;
+ import java.util.concurrent.TimeUnit;
  import javax.swing.Timer;
-import su.sfs2x.extensions.games.teenpatticlub.bsn.StartGameBsn;
+
+ import su.sfs2x.extensions.games.teenpatticlub.bsn.ActionsBsn;
+ import su.sfs2x.extensions.games.teenpatticlub.bsn.StartGameBsn;
 import su.sfs2x.extensions.games.teenpatticlub.bsn.UpdateLobbyBsn;
 import su.sfs2x.extensions.games.teenpatticlub.constants.Commands;
 import su.sfs2x.extensions.games.teenpatticlub.main.Main;
-import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
+ import su.sfs2x.extensions.games.teenpatticlub.npcs.NpcLogic;
+ import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 import su.sfs2x.extensions.games.teenpatticlub.timers.GameBeanTimer;
 import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 
@@ -472,6 +477,10 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
        StartGameBsn sgBsn = new StartGameBsn();
        sgBsn.startGame(this);
        sgBsn = null;
+
+
+         NpcLogic npcl = new NpcLogic(this);
+         npcl.performNpcTurn();
 
      }
      else

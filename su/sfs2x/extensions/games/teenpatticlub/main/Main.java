@@ -74,9 +74,9 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 
               //Appmethods.showLog("3patticlub Server Started");
 /*     */     
-/*  85 */     this.games = new ConcurrentHashMap();
-/*  86 */     this.publicTables = new ArrayList();
-/*  87 */     this.privateTables = new ArrayList();
+/*  85 */     this.games = new ConcurrentHashMap<>();
+/*  86 */     this.publicTables = new ArrayList<>();
+/*  87 */     this.privateTables = new ArrayList<>();
 /*  88 */     this.gifts = new SFSArray();
 /*  89 */     this.sfs = SmartFoxServer.getInstance();
 /*  90 */     this.proxy = new SQLProxy(getParentZone());

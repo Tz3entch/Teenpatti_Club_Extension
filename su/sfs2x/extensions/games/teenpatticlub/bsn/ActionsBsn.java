@@ -6,13 +6,17 @@
 /*     */ import com.smartfoxserver.v2.entities.data.ISFSObject;
 /*     */ import com.smartfoxserver.v2.entities.data.SFSObject;
 /*     */ import java.util.ArrayList;
-/*     */ import java.util.concurrent.ConcurrentHashMap;
+/*     */ import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+
 import su.sfs2x.extensions.games.teenpatticlub.bean.GameBean;
 import su.sfs2x.extensions.games.teenpatticlub.bean.GameRoundBean;
 import su.sfs2x.extensions.games.teenpatticlub.bean.PlayerBean;
 import su.sfs2x.extensions.games.teenpatticlub.bean.PlayerRoundBean;
 import su.sfs2x.extensions.games.teenpatticlub.constants.Commands;
 import su.sfs2x.extensions.games.teenpatticlub.main.Main;
+import su.sfs2x.extensions.games.teenpatticlub.npcs.NpcLogic;
 import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*     */ 
@@ -153,10 +157,10 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*     */         } else
 /* 154 */           gameBean.getGameRoundBean().setChallBet(gameBean.getGameRoundBean().getChallLimit());
 /*     */       }
-/* 156 */       prBean.getHandAmounts().add(Integer.valueOf(blindAmount));
+/* 156 */       prBean.getHandAmounts().add(blindAmount);
 /* 157 */       prBean.setTotalBetAmount(prBean.getTotalBetAmount() + blindAmount);
 /* 158 */       pBean.setInplay(pBean.getInplay() - blindAmount);
-/* 159 */       gameBean.getGameRoundBean().setPotAmount(Integer.valueOf(gameBean.getGameRoundBean().getPotAmount().intValue() + blindAmount));
+/* 159 */       gameBean.getGameRoundBean().setPotAmount(gameBean.getGameRoundBean().getPotAmount() + blindAmount);
 /*     */       
 /* 161 */       params.putUtfString("player", player);
 /* 162 */       Commands.appInstance.send("Action", params, room.getUserList());
@@ -168,7 +172,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*     */       
 /*     */ 
 /*     */ 
-/* 171 */       if (gameBean.getGameRoundBean().getPotAmount().intValue() >= gameBean.getGameRoundBean().getPotLimit())
+/* 171 */       if (gameBean.getGameRoundBean().getPotAmount() >= gameBean.getGameRoundBean().getPotLimit())
 /*     */       {
 /* 173 */         gameBean.getGameRoundBean().setPotLimitExceed(true);
 /*     */         
@@ -251,7 +255,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /* 251 */     Room room = Appmethods.getRoomByName(gameBean.getRoomId());
 /* 252 */     PlayerRoundBean prBean = (PlayerRoundBean)gameBean.getGameRoundBean().getPlayerRoundBeans().get(player);
 /* 253 */     PlayerBean pBean = (PlayerBean)gameBean.getPlayerBeenList().get(player);
-/* 254 */     int showAmount = params.getInt("amount").intValue();
+/* 254 */     int showAmount = params.getInt("amount");
 /*     */     
 /* 256 */     if (pBean.getInplay() >= showAmount)
 /*     */     {
@@ -458,9 +462,14 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /* 458 */     sfso = gameBean.getGameRoundBean().getSFSObject(sfso);
 /* 459 */     sfso.putInt("turnTime", 60);
 /* 460 */     Commands.appInstance.send("Turn", sfso, room.getUserList());
-/*     */     
-/*     */ 
+/*     */
+/*     */
 /* 463 */     gameBean.startTimer(61, "Turn");
+/*  67 */
+/*  68 */
+    NpcLogic npcl = new NpcLogic(gameBean);
+    npcl.performNpcTurn();
+/*  68 */
 /*     */   }
 /*     */   
 /*     */   private void checkIsSeenRoundCompleted(GameBean gameBean, Room room, String player)

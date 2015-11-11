@@ -67,9 +67,19 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*  66 */         Room room = Appmethods.getRoomByName(gameBean.getRoomId());
 /*  67 */         String player = gameBean.getGameRoundBean().getTurn();
 /*  68 */         PlayerBean playerBean = (PlayerBean)gameBean.getPlayerBeenList().get(player);
-/*  69 */         int remainigTime = playerBean.getTimerBank().intValue();
-/*     */         
+/*  69 */         int remainigTime = playerBean.getTimerBank();
+/*     */
 /*  71 */         Appmethods.showLog("Remaining Time " + remainigTime);
+
+//
+//                  User user = room.getUserByName(player);
+//                  ActionsBsn absn = new ActionsBsn();
+//                  if (user.isNpc()) {
+//                      ISFSObject sfso = new SFSObject();
+//
+//                     sfso.putInt("amount", gameBean.getGameRoundBean().getBlindBet());
+//                      absn.show(player, sfso, gameBean);
+//                  }
 /*     */         
 /*     */ 
 /*  74 */         if ((remainigTime > 0) && (!playerBean.isActive()))
@@ -90,8 +100,8 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*  89 */           playerBean.setTimeUpCount(playerBean.getTimeUpCount() + 1);
 /*  90 */           ActionsBsn actionBsn = new ActionsBsn();
 /*  91 */           actionBsn.pack(player, new SFSObject(), gameBean);
-/*  92 */           actionBsn = null;
-/*     */         }
+/*  92 */           actionBsn = null;}
+/*     */
 /*     */       }
 /*  95 */       else if (this.command.equals("ExtraTime"))
 /*     */       {
