@@ -24,7 +24,7 @@ public class NPCManager {
     List <Integer> npcsForRoom;
     LinkedList<String> unusedNpcNames;
 //    Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
-    Integer [] ar =   {1,0,0,0,0,0,0,0,0,0,0,0,0};
+    Integer [] ar =   {2,0,0,0,0,0,0,0,0,0,0,0,0};
     String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
                         "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
                         "Harley", "Harper", "Hayden", "Hunter", "Jaiden", "Jamie", "Jaylen",
@@ -49,8 +49,8 @@ public class NPCManager {
         Collections.shuffle(npcsForRoom, rand);
         Collections.shuffle((List)unusedNpcNames, rand);
         FillRooms();
-        Timer timer = new Timer();
-        timer.schedule(new CheckRoomTimer(this), 60000, 120000);
+//        Timer timer = new Timer();
+//        timer.schedule(new CheckRoomTimer(this), 60000, 120000);
     }
 
     private int getNpcsNumber() {
@@ -124,8 +124,8 @@ public class NPCManager {
                 Appmethods.joinRoom(npcUser, room);
                 npcUser.setPlayerId( rand.nextInt(1000), room);
                 PlayerBean playerBean = new PlayerBean(player);
-                playerBean.setInplay(15000.10f);
-                playerBean.setStartInplay(15000.10f);
+                playerBean.setInplay(25000.10f);
+                playerBean.setStartInplay(25000.10f);
                 playerBean.setAvatar("avatar-" + (rand.nextInt(5) + 1));
                 gameBean.getPlayerBeenList().put(player, playerBean);
                 gameBean.getSpectatorsList().add(player);

@@ -58,7 +58,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*  58 */     String wonPlayer = null;
 /*  59 */     String wonReason = null;
 /*     */     
-/*  61 */     int count = 0;
+/*  61 */     int count;
 /*  62 */     for (int i = 1; i <= 6; i++)
 /*     */     {
 /*  64 */       count = getSameRankUsers(i, gameBean);
@@ -189,7 +189,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*     */   
 /*     */ 
 /*     */ 
-/*     */   private int getSameRankUsers(int rank, GameBean gameBean)
+/*     */   public int getSameRankUsers(int rank, GameBean gameBean)
 /*     */   {
 /* 194 */     int count = 0;
 /* 195 */     for (Enumeration<PlayerRoundBean> e = gameBean.getGameRoundBean().getPlayerRoundBeans().elements(); e.hasMoreElements();)
@@ -207,7 +207,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /* 207 */     return count;
 /*     */   }
 /*     */   
-/*     */   private void getPlayerRank(PlayerRoundBean prBean)
+/*     */   public void getPlayerRank(PlayerRoundBean prBean)
 /*     */   {
 /* 212 */     GameLogic gl = new GameLogic();
 /* 213 */     if (gl.isTrail(prBean.getCards()))
