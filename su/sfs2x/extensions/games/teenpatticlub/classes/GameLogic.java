@@ -290,7 +290,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*     */       }
 /*     */     }
 /*     */     
-/* 293 */     if (((Integer)arr3.get(0)).intValue() < ((Integer)arr4.get(0)).intValue()) {
+/* 293 */     if (((Integer)arr3.get(0)) < ((Integer)arr4.get(0))) {
 /* 294 */       return prBean1;
 /*     */     }
 /* 296 */     return prBean2;

@@ -39,7 +39,7 @@ public class NpcLogic {
     }
 
     public void performNpcTurn() {
-        if (user.isNpc()) {
+        if (user!=null&&user.isNpc()) {
             User wonUser = findWonUser(gameBean);
             Appmethods.showLog("WON USER: "+ wonUser.getName());
             if (!wonUser.isNpc()) {
