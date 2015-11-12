@@ -4,6 +4,8 @@
 /*     */ import java.util.ArrayList;
 /*     */ import java.util.Collections;
 /*     */ import java.util.Iterator;
+import java.util.Objects;
+
 import su.sfs2x.extensions.games.teenpatticlub.bean.PlayerRoundBean;
 import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*     */ 
@@ -264,9 +266,9 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /* 264 */     ArrayList<Integer> arr2 = new ArrayList();
 /*     */     
 /* 266 */     for (int i = 0; i < prBean1.getCards().size(); i++)
-/* 267 */       arr1.add(Integer.valueOf(((Integer)prBean1.getCards().get(i)).intValue() % 13));
+/* 267 */       arr1.add((prBean1.getCards().get(i)) % 13);
 /* 268 */     for (int j = 0; j < prBean2.getCards().size(); j++) {
-/* 269 */       arr2.add(Integer.valueOf(((Integer)prBean2.getCards().get(j)).intValue() % 13));
+/* 269 */       arr2.add((prBean2.getCards().get(j)) % 13);
 /*     */     }
 /* 271 */     Collections.sort(arr1);
 /* 272 */     Collections.sort(arr2);
@@ -279,18 +281,18 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 /*     */     
 /* 280 */     for (int i = 0; i < arr1.size() - 1; i++)
 /*     */     {
-/* 282 */       if (arr1.get(i) == arr1.get(i + 1))
+/* 282 */       if (Objects.equals(arr1.get(i), arr1.get(i + 1)))
 /*     */       {
-/* 284 */         arr3.add((Integer)arr1.get(i));
+/* 284 */         arr3.add(arr1.get(i));
 /*     */       }
 /*     */       
-/* 287 */       if (arr2.get(i) == arr2.get(i + 1))
+/* 287 */       if (Objects.equals(arr2.get(i), arr2.get(i + 1)))
 /*     */       {
-/* 289 */         arr4.add((Integer)arr2.get(i));
+/* 289 */         arr4.add(arr2.get(i));
 /*     */       }
 /*     */     }
 /*     */     
-/* 293 */     if (((Integer)arr3.get(0)) < ((Integer)arr4.get(0))) {
+/* 293 */     if ((arr3.get(0)) < (arr4.get(0))) {
 /* 294 */       return prBean1;
 /*     */     }
 /* 296 */     return prBean2;

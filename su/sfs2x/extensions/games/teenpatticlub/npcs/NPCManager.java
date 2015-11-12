@@ -24,7 +24,7 @@ public class NPCManager {
     List <Integer> npcsForRoom;
     LinkedList<String> unusedNpcNames;
 //    Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
-    Integer [] ar =   {2,0,0,0,0,0,0,0,0,0,0,0,0};
+    Integer [] ar =   {4,0,0,0,0,0,0,0,0,0,0,0,0};
     String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
                         "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
                         "Harley", "Harper", "Hayden", "Hunter", "Jaiden", "Jamie", "Jaylen",
@@ -50,7 +50,7 @@ public class NPCManager {
         Collections.shuffle((List)unusedNpcNames, rand);
         FillRooms();
         Timer timer = new Timer();
-        timer.schedule(new CheckRoomTimer(this), 60000, 60000);
+        timer.schedule(new CheckRoomTimer(this), 60000, 120000);
     }
 
     private int getNpcsNumber() {
@@ -259,7 +259,7 @@ public class NPCManager {
             //room = Appmethods.getRoomByName(tableBean.get_roomId());
             room = Appmethods.getRoomByName(gameBean.getRoomId());
 
-            if (room != null) {
+            if ((!gameBean.getGameRoundBean().getTurn().equals("null")) && room!=null) {
                 NpcLogic npcLogic = new NpcLogic(gameBean);
                 List<User> npcs = npcsInRoom(room);
                 if (gameBean.getPlayerBeenList().size() >= gameBean.getMaxNoOfPlayers() && npcs.size() > 0) {
@@ -280,7 +280,7 @@ public class NPCManager {
                     for (Iterator<User> iterator = npcs.iterator(); iterator.hasNext(); ) {
                         User npc = iterator.next();
                         pb = playerBeans.get(npc.getName());
-                        if (pb.getTotalHands() > (2 + rand.nextInt(3)) && gameBean.getPlayerBeenList().size() > 1) {
+                        if (pb.getTotalHands() > (4 + rand.nextInt(3)) && gameBean.getPlayerBeenList().size() > 1) {
                             String wonName = npcLogic.findWonUser(gameBean).getName();
                             if (wonName == null || (!npc.getName().equals(npcLogic.findWonUser(gameBean).getName()))) {
                                 gameBean.getPlayerBeenList().get(npc.getName()).setActive(false);
@@ -299,10 +299,12 @@ public class NPCManager {
                                             list.add(pos.indexOf(posit));
                                         }
                                     }
+                                    if (list.size()>0) {
                                     joinNpcToRoom(npcUser, gameBean.getTableBeanId(), list.get(0));
                                     //Appmethods.updateGameBeanUpdateLobby(gameBean, room);
                                     Appmethods.showLog("********** NPCManager: npc " + npcUser.getName() + " added! Reason: To replace removed npc ************");
                                     System.out.println("*****NPC ADDED****");
+                                    }
                                 } catch (SFSException e) {
                                     e.printStackTrace();
                                 }
