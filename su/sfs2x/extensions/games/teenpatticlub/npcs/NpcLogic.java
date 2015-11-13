@@ -15,7 +15,8 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class NpcLogic {
@@ -29,7 +30,6 @@ public class NpcLogic {
     private Random rand = new Random();
     private ShowBsn showBsn = new ShowBsn();
     private ISFSObject sfso1;
-
     public NpcLogic(GameBean gameBean) {
         this.gameBean = gameBean;
         player = gameBean.getGameRoundBean().getTurn();
@@ -89,6 +89,13 @@ public class NpcLogic {
             }
         }
     }
+    private void npcWait(){
+        try {
+            TimeUnit.SECONDS.sleep(rand.nextInt(10)+3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void showTry() {
             if (activePlayers() == 2) {
@@ -105,13 +112,9 @@ public class NpcLogic {
             sfso1 = new SFSObject();
             sfso1.putUtfString("command", "Chall");
             sfso1.putInt("amount", gameBean.getGameRoundBean().getChallBet());
-            try {
-                TimeUnit.SECONDS.sleep(rand.nextInt(10)+3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            absn.chall(player, sfso1, gameBean);
-
+            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+            executor.schedule(new DelayedChaal(player, sfso1, gameBean), 13+rand.nextInt(5), TimeUnit.SECONDS);
+            executor.shutdown();
     }
 
     private void blind() {
@@ -119,24 +122,19 @@ public class NpcLogic {
                 sfso1 = new SFSObject();
                 sfso1.putUtfString("command", "Blind");
                 sfso1.putInt("amount", gameBean.getGameRoundBean().getBlindBet());
-                try {
-                    TimeUnit.SECONDS.sleep(rand.nextInt(10) + 3);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                absn.blind(player, sfso1, gameBean);
+                ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+                executor.schedule(new DelayedBlind(player, sfso1, gameBean), 13+rand.nextInt(5), TimeUnit.SECONDS);
+                executor.shutdown();
             }
     }
 
     private void seen() {
             sfso1 = new SFSObject();
             sfso1.putUtfString("command", "Seen");
-            try {
-                TimeUnit.SECONDS.sleep(rand.nextInt(10)+3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            absn.seen(player, sfso1, gameBean);
+            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+            executor.schedule(new DelayedSeen(player, sfso1, gameBean), 8+rand.nextInt(5), TimeUnit.SECONDS);
+            executor.shutdown();
+
 
     }
 
@@ -146,12 +144,9 @@ public class NpcLogic {
         }
         sfso1 = new SFSObject();
         sfso1.putUtfString("command", "Pack");
-        try {
-            TimeUnit.SECONDS.sleep(rand.nextInt(10)+3);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        absn.pack(player, sfso1, gameBean);
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.schedule(new DelayedPack(player, sfso1, gameBean), 13+rand.nextInt(5), TimeUnit.SECONDS);
+        executor.shutdown();
 
     }
 
@@ -162,12 +157,9 @@ public class NpcLogic {
             sfso1 = new SFSObject();
             sfso1.putUtfString("command", "Show");
             sfso1.putInt("amount", gameBean.getGameRoundBean().getBlindBet());
-            try {
-                TimeUnit.SECONDS.sleep(rand.nextInt(10) + 3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            absn.show(player, sfso1, gameBean);
+            ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+            executor.schedule(new DelayedShow(player, sfso1, gameBean), 13+rand.nextInt(5), TimeUnit.SECONDS);
+            executor.shutdown();
 
     }
 

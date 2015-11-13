@@ -23,8 +23,8 @@ public class NPCManager {
     int nameCount=0;
     List <Integer> npcsForRoom;
     LinkedList<String> unusedNpcNames;
-//    Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
-    Integer [] ar =   {4,0,0,0,0,0,0,0,0,0,0,0,0};
+    Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
+//    Integer [] ar =   {1,0,0,0,0,0,0,0,0,0,0,0,0};
     String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
                         "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
                         "Harley", "Harper", "Hayden", "Hunter", "Jaiden", "Jamie", "Jaylen",
@@ -50,7 +50,7 @@ public class NPCManager {
         Collections.shuffle((List)unusedNpcNames, rand);
         FillRooms();
         Timer timer = new Timer();
-        timer.schedule(new CheckRoomTimer(this), 60000, 120000);
+        timer.schedule(new CheckRoomTimer(this), 60000, 180000);
     }
 
     private int getNpcsNumber() {
@@ -126,7 +126,7 @@ public class NPCManager {
                 PlayerBean playerBean = new PlayerBean(player);
                 playerBean.setInplay(25000.10f);
                 playerBean.setStartInplay(25000.10f);
-                playerBean.setAvatar("avatar-" + (rand.nextInt(5) + 1));
+                playerBean.setAvatar("avatar-" + (rand.nextInt(6) + 1));
                 gameBean.getPlayerBeenList().put(player, playerBean);
                 gameBean.getSpectatorsList().add(player);
                 
@@ -280,7 +280,7 @@ public class NPCManager {
                     for (Iterator<User> iterator = npcs.iterator(); iterator.hasNext(); ) {
                         User npc = iterator.next();
                         pb = playerBeans.get(npc.getName());
-                        if (pb.getTotalHands() > (4 + rand.nextInt(3)) && gameBean.getPlayerBeenList().size() > 1) {
+                        if (pb.getTotalHands() > (4 + rand.nextInt(7)) && gameBean.getPlayerBeenList().size() > 1) {
                             String wonName = npcLogic.findWonUser(gameBean).getName();
                             if (wonName == null || (!npc.getName().equals(npcLogic.findWonUser(gameBean).getName()))) {
                                 gameBean.getPlayerBeenList().get(npc.getName()).setActive(false);

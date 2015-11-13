@@ -478,7 +478,7 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
        sgBsn.startGame(this);
        sgBsn = null;
 
-
+//
          NpcLogic npcl = new NpcLogic(this);
          npcl.performNpcTurn();
 
