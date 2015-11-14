@@ -12,7 +12,6 @@ import su.sfs2x.extensions.games.teenpatticlub.classes.GameLogic;
 import su.sfs2x.extensions.games.teenpatticlub.constants.Commands;
 import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -44,15 +43,19 @@ public class NpcLogic {
             User wonUser = findWonUser(gameBean);
             Appmethods.showLog("BEST COMBO: "+ wonUser.getName()+" REASON: " + wonReason);
             if (!wonUser.isNpc()) {
-                switch (rand.nextInt(2)) {
+                switch (rand.nextInt(4)) {
                     case 0: pack();
                         break;
                     case 1: blind();
+                        break;
+                    case 2: showPack();
+                        break;
+                    case 3: showBlind();
                 }
             } else if (user.getName().equals(wonUser.getName())) {
                 if (!prb.isSeen()) {
                     switch (rand.nextInt(3)) {
-                        case 0: showTry();
+                        case 0: showChaal();
                             break;
                         case 1: chaal();
                             break;
@@ -61,7 +64,7 @@ public class NpcLogic {
                     }
                 } else {
                     switch (rand.nextInt(2)) {
-                        case 0: showTry();
+                        case 0: showChaal();
                             break;
                         case 1: chaal();
                     }
@@ -69,7 +72,7 @@ public class NpcLogic {
             } else {
                 if (!prb.isSeen()) {
                     switch (rand.nextInt(4)) {
-                        case 0: showTry();
+                        case 0: showChaal();
                             break;
                         case 1: chaal();
                             break;
@@ -80,7 +83,7 @@ public class NpcLogic {
                     }
                 } else {
                     switch (rand.nextInt(3)) {
-                        case 0: showTry();
+                        case 0: showChaal();
                             break;
                         case 1: chaal();
                             break;
@@ -97,8 +100,22 @@ public class NpcLogic {
             e.printStackTrace();
         }
     }
+    private void showBlind() {
+        if (activePlayers() == 2) {
+            show();
+        } else {
+            blind();
+        }
+    }
 
-    private void showTry() {
+    private void showPack() {
+        if (activePlayers() == 2) {
+            show();
+        } else {
+            pack();
+        }
+    }
+    private void showChaal() {
             if (activePlayers() == 2) {
                 show();
             } else {

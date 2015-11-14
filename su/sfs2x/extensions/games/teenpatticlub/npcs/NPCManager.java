@@ -18,14 +18,14 @@ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 
 
 public class NPCManager {
-    Random rand = new Random();
-    Main app;
-    int nameCount=0;
-    List <Integer> npcsForRoom;
-    LinkedList<String> unusedNpcNames;
-//    Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
-    Integer [] ar =   {4,0,0,0,0,0,0,0,0,0,0,0,0};
-    String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
+    private Random rand = new Random();
+    private Main app;
+    private int nameCount=0;
+    private List <Integer> npcsForRoom;
+    private LinkedList<String> unusedNpcNames;
+    private Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
+//  private Integer [] ar =   {4,0,0,0,0,0,0,0,0,0,0,0,0};
+    private String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
                         "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
                         "Harley", "Harper", "Hayden", "Hunter", "Jaiden", "Jamie", "Jaylen",
                         "Jesse", "Jordan", "Justice", "Kai", "Kelly", "Kelsey", "Kendall",
