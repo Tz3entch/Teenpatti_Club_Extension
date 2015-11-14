@@ -24,7 +24,7 @@ public class NPCManager {
     List <Integer> npcsForRoom;
     LinkedList<String> unusedNpcNames;
     Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
-//    Integer [] ar =   {1,0,0,0,0,0,0,0,0,0,0,0,0};
+//    Integer [] ar =   {4,1,1,1,1,0,0,0,0,0,0,0,0};
     String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
                         "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
                         "Harley", "Harper", "Hayden", "Hunter", "Jaiden", "Jamie", "Jaylen",
@@ -50,7 +50,7 @@ public class NPCManager {
         Collections.shuffle((List)unusedNpcNames, rand);
         FillRooms();
         Timer timer = new Timer();
-        timer.schedule(new CheckRoomTimer(this), 60000, 180000);
+        timer.schedule(new CheckRoomTimer(this), 60000, 120000);
     }
 
     private int getNpcsNumber() {
@@ -259,7 +259,7 @@ public class NPCManager {
             //room = Appmethods.getRoomByName(tableBean.get_roomId());
             room = Appmethods.getRoomByName(gameBean.getRoomId());
 
-            if ((!gameBean.getGameRoundBean().getTurn().equals("null")) && room!=null) {
+            if (gameBean.getPlayerBeenList().size()>1&&(!gameBean.getGameRoundBean().getTurn().equals("null")) && room!=null) {
                 NpcLogic npcLogic = new NpcLogic(gameBean);
                 List<User> npcs = npcsInRoom(room);
                 if (gameBean.getPlayerBeenList().size() >= gameBean.getMaxNoOfPlayers() && npcs.size() > 0) {

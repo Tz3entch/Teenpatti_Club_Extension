@@ -30,6 +30,7 @@ public class NpcLogic {
     private Random rand = new Random();
     private ShowBsn showBsn = new ShowBsn();
     private ISFSObject sfso1;
+    private String wonReason;
     public NpcLogic(GameBean gameBean) {
         this.gameBean = gameBean;
         player = gameBean.getGameRoundBean().getTurn();
@@ -41,7 +42,7 @@ public class NpcLogic {
     public void performNpcTurn() {
         if (user!=null&&user.isNpc()) {
             User wonUser = findWonUser(gameBean);
-            Appmethods.showLog("WON USER: "+ wonUser.getName());
+            Appmethods.showLog("WON USER: "+ wonUser.getName()+" REASON: " + wonReason);
             if (!wonUser.isNpc()) {
                 switch (rand.nextInt(2)) {
                     case 0: pack();
@@ -196,7 +197,19 @@ public class NpcLogic {
 /*  67 */         if (count == 1)
 /*     */         {
 /*  69 */           wonPlayer = ((PlayerRoundBean)gameBean.getGameRoundBean().getHighRankUsers().get(0)).getPlayerId();
-/*  70 */
+/*  70 */ if (i == 1) {
+/*  71 */             wonReason = "three of a kind";
+/*  72 */           } else if (i == 2) {
+/*  73 */             wonReason = "pure sequence";
+/*  74 */           } else if (i == 3) {
+/*  75 */             wonReason = "sequence";
+/*  76 */           } else if (i == 4) {
+/*  77 */             wonReason = "color";
+/*  78 */           } else if (i == 5) {
+/*  79 */             wonReason = "pair";
+/*  80 */           } else if (i == 6) {
+/*  81 */             wonReason = "high card";
+/*     */           }
 /*     */         }
 /*     */         else
 /*     */         {
@@ -239,6 +252,7 @@ public class NpcLogic {
 
         }
         gameBean.getGameRoundBean().setHighRankUsers(new ArrayList<PlayerRoundBean>());
+        this.wonReason = wonReason;
         return  Commands.appInstance.getApi().getUserByName(wonPlayer);
     }
 
