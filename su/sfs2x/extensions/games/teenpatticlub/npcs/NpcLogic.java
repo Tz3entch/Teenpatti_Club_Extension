@@ -42,7 +42,7 @@ public class NpcLogic {
     public void performNpcTurn() {
         if (user!=null&&user.isNpc()) {
             User wonUser = findWonUser(gameBean);
-            Appmethods.showLog("WON USER: "+ wonUser.getName()+" REASON: " + wonReason);
+            Appmethods.showLog("BEST COMBO: "+ wonUser.getName()+" REASON: " + wonReason);
             if (!wonUser.isNpc()) {
                 switch (rand.nextInt(2)) {
                     case 0: pack();
@@ -248,10 +248,11 @@ public class NpcLogic {
 /*     */
 /* 119 */
 /*     */         }
+                break;
 /*     */       }
 
         }
-        gameBean.getGameRoundBean().setHighRankUsers(new ArrayList<PlayerRoundBean>());
+//        gameBean.getGameRoundBean().setHighRankUsers(new ArrayList<PlayerRoundBean>());
         this.wonReason = wonReason;
         return  Commands.appInstance.getApi().getUserByName(wonPlayer);
     }

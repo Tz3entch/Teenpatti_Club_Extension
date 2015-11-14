@@ -23,8 +23,8 @@ public class NPCManager {
     int nameCount=0;
     List <Integer> npcsForRoom;
     LinkedList<String> unusedNpcNames;
-    Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
-//    Integer [] ar =   {4,1,1,1,1,0,0,0,0,0,0,0,0};
+//    Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
+    Integer [] ar =   {4,0,0,0,0,0,0,0,0,0,0,0,0};
     String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
                         "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
                         "Harley", "Harper", "Hayden", "Hunter", "Jaiden", "Jamie", "Jaylen",
