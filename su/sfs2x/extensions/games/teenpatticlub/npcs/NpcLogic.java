@@ -12,6 +12,7 @@ import su.sfs2x.extensions.games.teenpatticlub.classes.GameLogic;
 import su.sfs2x.extensions.games.teenpatticlub.constants.Commands;
 import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -269,7 +270,7 @@ public class NpcLogic {
 /*     */       }
 
         }
-//        gameBean.getGameRoundBean().setHighRankUsers(new ArrayList<PlayerRoundBean>());
+        gameBean.getGameRoundBean().setHighRankUsers(new ArrayList<PlayerRoundBean>());
         this.wonReason = wonReason;
         return  Commands.appInstance.getApi().getUserByName(wonPlayer);
     }
