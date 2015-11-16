@@ -216,13 +216,13 @@ import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 /*     */       {
 /* 217 */         bean = (GameBean)e.nextElement();
 /* 218 */         showLog("Gamebean " + bean.getRoomId());
-/* 219 */         if (bean.getTableBeanId() == tableBean.get_id().intValue())
+/* 219 */         if (bean.getTableBeanId() == tableBean.get_id())
 /*     */         {
 /* 221 */           if ((bean.getJoinedPlayers() != bean.getMaxNoOfPlayers()) && (bean.getJoinedPlayers() != 0))
 /*     */           {
 /*     */ 
 /* 224 */             tableBean.set_roomId(bean.getRoomId());
-/* 225 */             break;
+/* 225 */     //       break; ///////////////////////////////////////////////////////////////////// I comment it to set LAST room visible.
 /*     */           }
 /*     */         }
 /*     */       }

@@ -185,94 +185,76 @@ public class NpcLogic {
     private int activePlayers(){
         int result=0;
         for (Enumeration<PlayerRoundBean> e = gameBean.getGameRoundBean().getPlayerRoundBeans().elements(); e.hasMoreElements();)
-/*     */     {
-/*  51 */       PlayerRoundBean prBean = (PlayerRoundBean)e.nextElement();
-/*  52 */       if ((!prBean.isLeaveTable()) && (!prBean.isPack()) && (!prBean.isSitOut()))
-/*     */       {
-/*  54 */         result++;
-/*     */       }
-/*     */     }
+     {
+       PlayerRoundBean prBean = (PlayerRoundBean)e.nextElement();
+       if ((!prBean.isLeaveTable()) && (!prBean.isPack()) && (!prBean.isSitOut()))
+       {
+         result++;
+       }
+     }
         return  result;
     }
 
-    public User findWonUser(GameBean gameBean){
-        for (Enumeration<PlayerRoundBean> e = gameBean.getGameRoundBean().getPlayerRoundBeans().elements(); e.hasMoreElements();)
-/*     */     {
-/*  51 */       PlayerRoundBean prBean = (PlayerRoundBean)e.nextElement();
-/*  52 */       if ((!prBean.isLeaveTable()) && (!prBean.isPack()) && (!prBean.isSitOut()))
-/*     */       {
-/*  54 */         showBsn.getPlayerRank(prBean);
-/*     */       }
-/*     */     }
-               String wonPlayer = null;
-/*  59 */     String wonReason = null;
+    public User findWonUser(GameBean gameBean) {
+        for (Enumeration<PlayerRoundBean> e = gameBean.getGameRoundBean().getPlayerRoundBeans().elements(); e.hasMoreElements(); ) {
+            PlayerRoundBean prBean = (PlayerRoundBean) e.nextElement();
+            if ((!prBean.isLeaveTable()) && (!prBean.isPack()) && (!prBean.isSitOut())) {
+                showBsn.getPlayerRank(prBean);
+            }
+        }
+        String wonPlayer = null;
+        String wonReason = null;
         int count;
-/*  62 */     for (int i = 1; i <= 6; i++)
-/*     */     {
-/*  64 */       count = showBsn.getSameRankUsers(i, gameBean);
-/*  65 */       if (count > 0)
-/*     */       {
-/*  67 */         if (count == 1)
-/*     */         {
-/*  69 */           wonPlayer = ((PlayerRoundBean)gameBean.getGameRoundBean().getHighRankUsers().get(0)).getPlayerId();
-/*  70 */ if (i == 1) {
-/*  71 */             wonReason = "three of a kind";
-/*  72 */           } else if (i == 2) {
-/*  73 */             wonReason = "pure sequence";
-/*  74 */           } else if (i == 3) {
-/*  75 */             wonReason = "sequence";
-/*  76 */           } else if (i == 4) {
-/*  77 */             wonReason = "color";
-/*  78 */           } else if (i == 5) {
-/*  79 */             wonReason = "pair";
-/*  80 */           } else if (i == 6) {
-/*  81 */             wonReason = "high card";
-/*     */           }
-/*     */         }
-/*     */         else
-/*     */         {
-/*  86 */           GameLogic gl = new GameLogic();
-/*     */
-/*  88 */           if (i == 1)
-/*     */           {
-/*  90 */             wonPlayer = gl.compareTrails(gameBean.getGameRoundBean().getHighRankUsers());
-/*  91 */             wonReason = "three of a kind with higher card";
-/*     */           }
-/*  93 */           else if (i == 2)
-/*     */           {
-/*  95 */             wonPlayer = gl.compareStraightFlush(gameBean.getGameRoundBean().getHighRankUsers());
-/*  96 */             wonReason = "pure sequence with higher card";
-/*     */           }
-/*  98 */           else if (i == 3)
-/*     */           {
-/* 100 */             wonPlayer = gl.compareStraightFlush(gameBean.getGameRoundBean().getHighRankUsers());
-/* 101 */             wonReason = "sequence with higher card";
-/*     */           }
-/* 103 */           else if (i == 4)
-/*     */           {
-/* 105 */             wonPlayer = gl.compareStraightFlush(gameBean.getGameRoundBean().getHighRankUsers());
-/* 106 */             wonReason = "color with higher card";
-/*     */           }
-/* 108 */           else if (i == 5)
-/*     */           {
-/* 110 */             wonPlayer = gl.comparePair(gameBean.getGameRoundBean().getHighRankUsers());
-/* 111 */             wonReason = "pair with higher card";
-/*     */           }
-/* 113 */           else if (i == 6)
-/*     */           {
-/* 115 */             wonPlayer = gl.compareStraightFlush(gameBean.getGameRoundBean().getHighRankUsers());
-/* 116 */             wonReason = "higher card";
-/*     */           }
-/*     */
-/* 119 */
-/*     */         }
+        for (int i = 1; i <= 6; i++) {
+            count = showBsn.getSameRankUsers(i, gameBean);
+            if (count > 0) {
+                if (count == 1) {
+                    wonPlayer = ((PlayerRoundBean) gameBean.getGameRoundBean().getHighRankUsers().get(0)).getPlayerId();
+                    if (i == 1) {
+                        wonReason = "three of a kind";
+                    } else if (i == 2) {
+                        wonReason = "pure sequence";
+                    } else if (i == 3) {
+                        wonReason = "sequence";
+                    } else if (i == 4) {
+                        wonReason = "color";
+                    } else if (i == 5) {
+                        wonReason = "pair";
+                    } else if (i == 6) {
+                        wonReason = "high card";
+                    }
+                } else {
+                    GameLogic gl = new GameLogic();
+
+                    if (i == 1) {
+                        wonPlayer = gl.compareTrails(gameBean.getGameRoundBean().getHighRankUsers());
+                        wonReason = "three of a kind with higher card";
+                    } else if (i == 2) {
+                        wonPlayer = gl.compareStraightFlush(gameBean.getGameRoundBean().getHighRankUsers());
+                        wonReason = "pure sequence with higher card";
+                    } else if (i == 3) {
+                        wonPlayer = gl.compareStraightFlush(gameBean.getGameRoundBean().getHighRankUsers());
+                        wonReason = "sequence with higher card";
+                    } else if (i == 4) {
+                        wonPlayer = gl.compareStraightFlush(gameBean.getGameRoundBean().getHighRankUsers());
+                        wonReason = "color with higher card";
+                    } else if (i == 5) {
+                        wonPlayer = gl.comparePair(gameBean.getGameRoundBean().getHighRankUsers());
+                        wonReason = "pair with higher card";
+                    } else if (i == 6) {
+                        wonPlayer = gl.compareStraightFlush(gameBean.getGameRoundBean().getHighRankUsers());
+                        wonReason = "higher card";
+                    }
+
+
+                }
                 break;
-/*     */       }
+            }
 
         }
         gameBean.getGameRoundBean().setHighRankUsers(new ArrayList<PlayerRoundBean>());
         this.wonReason = wonReason;
-        return  Commands.appInstance.getApi().getUserByName(wonPlayer);
+        return Commands.appInstance.getApi().getUserByName(wonPlayer);
     }
 
 }
