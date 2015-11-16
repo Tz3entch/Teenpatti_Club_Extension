@@ -25,6 +25,7 @@ import su.sfs2x.extensions.games.teenpatticlub.bean.TableBean;
 import su.sfs2x.extensions.games.teenpatticlub.bsn.UpdateLobbyBsn;
 import su.sfs2x.extensions.games.teenpatticlub.constants.Commands;
 import su.sfs2x.extensions.games.teenpatticlub.main.Main;
+import su.sfs2x.extensions.games.teenpatticlub.npcs.NPCManager;
 import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 /*     */ 
 /*     */ 
@@ -218,7 +219,8 @@ import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 /* 218 */         showLog("Gamebean " + bean.getRoomId());
 /* 219 */         if (bean.getTableBeanId() == tableBean.get_id())
 /*     */         {
-/* 221 */           if ((bean.getJoinedPlayers() != bean.getMaxNoOfPlayers()) && (bean.getJoinedPlayers() != 0))
+                Room room = Appmethods.getRoomByName(bean.getRoomId());///////////////////
+/* 221 */           if ((bean.getJoinedPlayers() != bean.getMaxNoOfPlayers()) && (bean.getJoinedPlayers() != 0 && NPCManager.npcsInRoom(room).size()>0))
 /*     */           {
 /*     */ 
 /* 224 */             tableBean.set_roomId(bean.getRoomId());
