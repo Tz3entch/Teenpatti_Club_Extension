@@ -172,8 +172,9 @@ import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 /* 171 */     TableBean tableBean = getTableBean(gameBean.getTableBeanId());
 /* 172 */     boolean bool = false;
 /* 173 */     showLog("updateDynamicRoom " + gameBean.getTableBeanId());
-/*     */     
-/* 175 */     if ((gameBean.getJoinedPlayers() == gameBean.getMaxNoOfPlayers()) || (gameBean.getJoinedPlayers() == 0))
+/*     */
+    Room room = Appmethods.getRoomByName(gameBean.getRoomId());///////////////////
+/* 175 */     if ((gameBean.getJoinedPlayers() == gameBean.getMaxNoOfPlayers() && NPCManager.npcsInRoom(room).size()==0) || (gameBean.getJoinedPlayers() == 0))
 /*     */     {
 /* 177 */       showLog("updateDynamicRoom 2");
 /*     */       
@@ -219,12 +220,12 @@ import su.sfs2x.extensions.games.teenpatticlub.proxy.SQLProxy;
 /* 218 */         showLog("Gamebean " + bean.getRoomId());
 /* 219 */         if (bean.getTableBeanId() == tableBean.get_id())
 /*     */         {
-                Room room = Appmethods.getRoomByName(bean.getRoomId());///////////////////
-/* 221 */           if ((bean.getJoinedPlayers() != bean.getMaxNoOfPlayers()) && (bean.getJoinedPlayers() != 0 && NPCManager.npcsInRoom(room).size()>0))
+
+/* 221 */           if ((bean.getJoinedPlayers() != bean.getMaxNoOfPlayers()) && (bean.getJoinedPlayers() != 0))
 /*     */           {
 /*     */ 
 /* 224 */             tableBean.set_roomId(bean.getRoomId());
-/* 225 */     //       break; ///////////////////////////////////////////////////////////////////// I comment it to set LAST room visible.
+/* 225 */       //      break; ///////////////////////////////////////////////////////////////////// I comment it to set LAST room visible.
 /*     */           }
 /*     */         }
 /*     */       }

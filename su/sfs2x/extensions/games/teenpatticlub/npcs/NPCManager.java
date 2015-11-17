@@ -25,8 +25,8 @@ public class NPCManager {
     private List <Integer> npcsForRoom;
     private LinkedList<String> unusedNpcNames;
     private HashMap<String, Integer> settings;
-//    private Integer [] ar = {2,3,1,2,3,1,4,2,1,4,3,1,2};
-  private Integer [] ar =   {4,0,0,0,0,0,0,0,0,0,0,0,0};
+    private Integer [] ar = {2,3,1,2,3,1,5,2,1,4,3,1,2};
+//  private Integer [] ar =   {5,0,0,0,0,0,0,0,0,0,0,0,0};
     private String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
                         "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
                         "Harley", "Harper", "Hayden", "Hunter", "Jaiden", "Jamie", "Jaylen",
@@ -44,10 +44,10 @@ public class NPCManager {
 
     public void init() {
         Appmethods.showLog("!!!!!!!!!!!!!INIT NPC NAMAGER!!!!!!!!!!!!!");
-        npcsForRoom = (List)new ArrayList<>((Arrays.asList(ar)));
-//        npcsForRoom = app.proxy.getNpcforRoom();
-        unusedNpcNames = new LinkedList<>(Arrays.asList(arNames));
-//        unusedNpcNames = app.proxy.getNpcNames();
+//        npcsForRoom = (List)new ArrayList<>((Arrays.asList(ar)));
+        npcsForRoom = app.proxy.getNpcforRoom();
+//        unusedNpcNames = new LinkedList<>(Arrays.asList(arNames));
+        unusedNpcNames = app.proxy.getNpcNames();
         settings = app.proxy.getNpcSettings();
         Collections.shuffle(npcsForRoom, rand);
         Collections.shuffle((List)unusedNpcNames, rand);
@@ -151,7 +151,7 @@ public class NPCManager {
         if (gameBean != null) {
 
 
-            if ((( gameBean.getPlayers().get(pos)).equals("null")) && (!Appmethods.isUserExist(gameBean.getPlayers(), player))) { //TODO исправить это говно
+            if ((( gameBean.getPlayers().get(pos)).equals("null")) && (!Appmethods.isUserExist(gameBean.getPlayers(), player))) { //TODO пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
                 gameBean.addPlayer(pos, npcUser.getName());
 
