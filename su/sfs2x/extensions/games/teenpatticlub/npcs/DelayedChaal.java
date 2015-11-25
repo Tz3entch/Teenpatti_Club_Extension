@@ -4,9 +4,6 @@ import com.smartfoxserver.v2.entities.data.ISFSObject;
 import su.sfs2x.extensions.games.teenpatticlub.bean.GameBean;
 import su.sfs2x.extensions.games.teenpatticlub.bsn.ActionsBsn;
 
-/**
- * Created by Сережа on 13.11.2015.
- */
 public class DelayedChaal implements Runnable {
     String player;
     ISFSObject sfso;

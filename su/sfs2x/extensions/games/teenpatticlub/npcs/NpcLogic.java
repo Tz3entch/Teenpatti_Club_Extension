@@ -246,11 +246,9 @@ public class NpcLogic {
                         wonReason = "higher card";
                     }
 
-
                 }
                 break;
             }
-
         }
         gameBean.getGameRoundBean().setHighRankUsers(new ArrayList<PlayerRoundBean>());
         this.wonReason = wonReason;

@@ -1,13 +1,12 @@
  package su.sfs2x.extensions.games.teenpatticlub.proxy;
- 
+
  import com.smartfoxserver.bitswarm.sessions.ISession;
-import com.smartfoxserver.v2.db.IDBManager;
+ import com.smartfoxserver.v2.db.IDBManager;
  import com.smartfoxserver.v2.entities.Zone;
  import com.smartfoxserver.v2.entities.data.ISFSArray;
  import com.smartfoxserver.v2.entities.data.ISFSObject;
  import com.smartfoxserver.v2.entities.data.SFSArray;
  import com.smartfoxserver.v2.entities.data.SFSObject;
- import java.io.PrintStream;
  import java.sql.Connection;
  import java.sql.PreparedStatement;
  import java.sql.ResultSet;
@@ -16,32 +15,13 @@ import com.smartfoxserver.v2.db.IDBManager;
  import java.text.ParseException;
  import java.text.SimpleDateFormat;
  import java.util.*;
+ import su.sfs2x.extensions.games.teenpatticlub.bean.GameBean;
+ import su.sfs2x.extensions.games.teenpatticlub.bean.PlayerBean;
+ import su.sfs2x.extensions.games.teenpatticlub.bean.PlayerRoundBean;
+ import su.sfs2x.extensions.games.teenpatticlub.bean.TableBean;
+ import su.sfs2x.extensions.games.teenpatticlub.constants.Commands;
+ import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 
-
-
-
- import java.util.concurrent.ConcurrentHashMap;
-import su.sfs2x.extensions.games.teenpatticlub.bean.GameBean;
-import su.sfs2x.extensions.games.teenpatticlub.bean.GameRoundBean;
-import su.sfs2x.extensions.games.teenpatticlub.bean.PlayerBean;
-import su.sfs2x.extensions.games.teenpatticlub.bean.PlayerRoundBean;
-import su.sfs2x.extensions.games.teenpatticlub.bean.TableBean;
-import su.sfs2x.extensions.games.teenpatticlub.constants.Commands;
-import su.sfs2x.extensions.games.teenpatticlub.main.Main;
-import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
  public class SQLProxy
  {
    Connection con = null;

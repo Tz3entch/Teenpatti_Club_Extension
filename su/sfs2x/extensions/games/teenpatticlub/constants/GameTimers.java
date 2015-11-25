@@ -11,7 +11,3 @@ public class GameTimers
 }
 
 
-/* Location:              /Users/yuggupta/Desktop/teenpathiExtension.jar!/su/sfs2x/extensions/games/teenpathi/constants/GameTimers.class
- * Java compiler version: 7 (51.0)
- * JD-Core Version:       0.7.1
- */
