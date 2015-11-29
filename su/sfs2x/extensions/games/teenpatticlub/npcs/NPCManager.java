@@ -2,12 +2,14 @@ package su.sfs2x.extensions.games.teenpatticlub.npcs;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.smartfoxserver.v2.api.SFSApi;
 import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.SFSException;
 import com.smartfoxserver.v2.exceptions.SFSLoginException;
+import com.smartfoxserver.v2.util.ClientDisconnectionReason;
 import su.sfs2x.extensions.games.teenpatticlub.bean.GameBean;
 import su.sfs2x.extensions.games.teenpatticlub.bean.PlayerBean;
 import su.sfs2x.extensions.games.teenpatticlub.bean.TableBean;
@@ -281,12 +283,14 @@ public class NPCManager {
                     int n = rand.nextInt(npcs.size());
                     String npcName = npcs.get(n).getName();
                     if (!npcName.equals(npcLogic.findWonUser(gameBean).getName())) {
+                        Commands.appInstance.getApi().disconnectUser(npcs.get(n));
                         gameBean.getPlayerBeenList().get(npcName).setActive(false);
                         Appmethods.showLog("********** NPCManager: npc " + npcName + " will be removed! Reason: room is full!************");
                         unusedNpcNames.addLast(npcs.get(n).getName());
-                        app.cdUser.removeConnectedUser(npcs.get(n));
+                       // app.cdUser.removeConnectedUser(npcs.get(n));
+                        Commands.appInstance.getApi().disconnectUser(npcs.get(n));
                         npcs.remove(npcs.get(n));
-                        Appmethods.updateDynamicRoom(gameBean);
+                        //Appmethods.updateDynamicRoom(gameBean);
                         System.out.println("*****NPC REMOVED****");
                     }
 
@@ -317,10 +321,11 @@ public class NPCManager {
                         if (pb.getTotalHands() > (settings.get("minHands") + rand.nextInt(settings.get("maxHands") - settings.get("minHands") + 1)) && gameBean.getPlayerBeenList().size() > 1) {
                             String wonName = npcLogic.findWonUser(gameBean).getName();
                             if (wonName == null || (!npc.getName().equals(npcLogic.findWonUser(gameBean).getName()))) {
+                                Commands.appInstance.getApi().disconnectUser(npc);/////////
                                 gameBean.getPlayerBeenList().get(npc.getName()).setActive(false);
                                 Appmethods.showLog("********** NPCManager: npc " + npc.getName() + " removed! Reason: Played enough hands!************");
                                 unusedNpcNames.addLast(npc.getName());
-                                app.cdUser.removeConnectedUser(npc);
+                               // app.cdUser.removeConnectedUser(npc);
                                 iterator.remove();
                                 System.out.println("*****NPC REMOVED****");
 
@@ -364,6 +369,14 @@ public class NPCManager {
                         e.printStackTrace();
                     }
                 }
+            }
+        }
+        ArrayList<User> allUsers = (ArrayList)Commands.appInstance.getParentZone().getUserList();
+        for (User user: allUsers) {
+            if (user.isNpc() && (!user.isPlayer())) {
+                String name = user.getName();
+                Commands.appInstance.getApi().disconnectUser(user);
+                Appmethods.showLog("********** NPCManager: npc " + name + " removed! Reason: Not a player!************");
             }
         }
         Appmethods.showLog("*****************************CHECKROOMS ENDED**************************************");

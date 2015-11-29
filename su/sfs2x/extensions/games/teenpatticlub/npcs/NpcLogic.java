@@ -31,6 +31,7 @@ public class NpcLogic {
     private ShowBsn showBsn = new ShowBsn();
     private ISFSObject sfso1;
     private String wonReason;
+    private int rank;
     public NpcLogic(GameBean gameBean) {
         this.gameBean = gameBean;
         player = gameBean.getGameRoundBean().getTurn();
@@ -55,31 +56,23 @@ public class NpcLogic {
                 }
             } else if (user.getName().equals(wonUser.getName())) {
                 if (!prb.isSeen()) {
-                    switch (rand.nextInt(3)) {
-                        case 0: showChaal();
-                            break;
-                        case 1: chaal();
-                            break;
-                        case 2: blind();
-
-                    }
-                } else {
                     switch (rand.nextInt(2)) {
                         case 0: showChaal();
                             break;
-                        case 1: chaal();
+                        case 1: blind();
+
                     }
+                } else {
+                    showChaal();
                 }
             } else {
                 if (!prb.isSeen()) {
-                    switch (rand.nextInt(4)) {
+                    switch (rand.nextInt(3)) {
                         case 0: showChaal();
                             break;
-                        case 1: chaal();
+                        case 1: blind();
                             break;
-                        case 2: blind();
-                            break;
-                        case 3: pack();
+                        case 2: pack();
 
                     }
                 } else {
@@ -116,13 +109,19 @@ public class NpcLogic {
             pack();
         }
     }
+
     private void showChaal() {
-            if (activePlayers() == 2) {
-                show();
-            } else {
-                chaal();
-            }
+        if ( rank == 6 &&(activePlayers() == 2 && gameBean.getGameRoundBean().getHandNo() > rand.nextInt(3) + 3) ) {
+            show();
+        } else if (rank == 5 && (activePlayers() == 2 && gameBean.getGameRoundBean().getHandNo() > rand.nextInt(1) + 4) ) {
+            show();
+        } else if ( (rank > 1 && rank < 5)&&(activePlayers() == 2 && gameBean.getGameRoundBean().getHandNo() > rand.nextInt(4) + 5) ) {
+            show();
+        } else {
+            chaal();
+        }
     }
+
     private void  chaal() {
             if (!prb.isSeen()) {
                 seen();
@@ -204,6 +203,7 @@ public class NpcLogic {
         }
         String wonPlayer = null;
         String wonReason = null;
+        int rank=0;
         int count;
         for (int i = 1; i <= 6; i++) {
             count = showBsn.getSameRankUsers(i, gameBean);
@@ -247,11 +247,13 @@ public class NpcLogic {
                     }
 
                 }
+                rank=i;
                 break;
             }
         }
         gameBean.getGameRoundBean().setHighRankUsers(new ArrayList<PlayerRoundBean>());
         this.wonReason = wonReason;
+        this.rank = rank;
         return Commands.appInstance.getApi().getUserByName(wonPlayer);
     }
 

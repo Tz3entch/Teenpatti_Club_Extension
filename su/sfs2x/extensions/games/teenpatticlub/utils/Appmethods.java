@@ -15,7 +15,7 @@
  import su.sfs2x.extensions.games.teenpatticlub.bsn.UpdateLobbyBsn;
  import su.sfs2x.extensions.games.teenpatticlub.constants.Commands;
  import su.sfs2x.extensions.games.teenpatticlub.npcs.NPCManager;
- 
+
  public class Appmethods
  {
    private static int roomId = 1000;
