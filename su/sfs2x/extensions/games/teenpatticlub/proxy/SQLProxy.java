@@ -624,7 +624,7 @@
      String sql = "select distributor_id  from user_master where userid=?;";
      Appmethods.showSQLLog(" SQLProxy >>  sql >> :" + sql);
      
-     String dis_id = "";
+     String dis_id = "TD3021785";
      try
      {
        PreparedStatement stmt = this.con.prepareStatement(sql);

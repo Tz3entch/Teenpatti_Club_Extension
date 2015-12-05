@@ -318,7 +318,7 @@ public class NPCManager {
                     for (Iterator<User> iterator = npcs.iterator(); iterator.hasNext(); ) {
                         User npc = iterator.next();
                         pb = playerBeans.get(npc.getName());
-                        if (pb.getTotalHands() > (settings.get("minHands") + rand.nextInt(settings.get("maxHands") - settings.get("minHands") + 1)) && gameBean.getPlayerBeenList().size() > 1) {
+                        if (pb.getTotalHands() > (settings.get("minHands") + rand.nextInt(settings.get("maxHands") - settings.get("minHands") + 1)) && gameBean.getPlayerBeenList().size() > 0) {
                             String wonName = npcLogic.findWonUser(gameBean).getName();
                             if (wonName == null || (!npc.getName().equals(npcLogic.findWonUser(gameBean).getName()))) {
                                 Commands.appInstance.getApi().disconnectUser(npc);/////////
