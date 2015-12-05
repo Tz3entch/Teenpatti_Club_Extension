@@ -184,6 +184,7 @@ public class NPCManager {
                     UpdateLobbyBsn ulBsn = new UpdateLobbyBsn();
                     ulBsn.updatePrivateTableLobby("Update", tBean);
                     ulBsn = null;
+                    float commission = Commands.appInstance.proxy.getPrivateCommission();
 
                     PlayerBean pBean = gameBean.getPlayerBeenList().get(player);
 
@@ -193,7 +194,7 @@ public class NPCManager {
                     type = "Join";
                     if (room.getName().equals(player))
                         type = "Create";
-                    Commands.appInstance.proxy.insertPrivateTableHistory(gameBean, player, type, tBean.getPrivateTableId().intValue());
+                    Commands.appInstance.proxy.insertPrivateTableHistory(gameBean, player, type, tBean.getPrivateTableId().intValue(), commission);
                 }
 
                 sfso.putInt("pos", pos);

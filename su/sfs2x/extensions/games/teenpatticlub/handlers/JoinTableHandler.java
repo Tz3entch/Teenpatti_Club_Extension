@@ -68,14 +68,15 @@
            ulBsn = null;
            
            PlayerBean pBean = (PlayerBean)gameBean.getPlayerBeenList().get(player);
+           float commission = Commands.appInstance.proxy.getPrivateCommission();
            
-           pBean.setInplay(pBean.getInplay() - 30.0F);
+           pBean.setInplay(pBean.getInplay() - commission);
            
  
            String type = "Join";
            if (room.getName().equals(player))
              type = "Create";
-           Commands.appInstance.proxy.insertPrivateTableHistory(gameBean, player, type, tBean.getPrivateTableId().intValue());
+           Commands.appInstance.proxy.insertPrivateTableHistory(gameBean, player, type, tBean.getPrivateTableId().intValue(), commission);
          }
          
          sfso.putInt("pos", pos);

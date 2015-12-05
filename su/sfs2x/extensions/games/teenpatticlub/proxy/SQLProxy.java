@@ -167,16 +167,39 @@
    
    public float getPlayerCommission(String player)
    {
-     String sql = "select commission from user_master where userid =?;";
+     String sql = "select game_comm from game_master_settings where id =1;";
      float commission = 0.0F;
      try
      {
        PreparedStatement stmt = this.con.prepareStatement(sql);
-       stmt.setString(1, player);
+       //stmt.setString(1, player);
        ResultSet res = stmt.executeQuery();
        while (res.next())
        {
-         commission = res.getFloat("commission");
+         commission = res.getFloat("game_comm");
+       }
+       res.close();
+       stmt.close();
+     }
+     catch (SQLException e)
+     {
+       System.out.println(" SQLProxyError >>  loginDate  >> :" + e.toString());
+     }
+     return commission;
+   }
+
+   public float getPrivateCommission()
+   {
+     String sql = "select pvttable_cut_point from game_master_settings where id =1;";
+     float commission = 0.0F;
+     try
+     {
+       PreparedStatement stmt = this.con.prepareStatement(sql);
+       //stmt.setString(1, player);
+       ResultSet res = stmt.executeQuery();
+       while (res.next())
+       {
+         commission = res.getFloat("pvttable_cut_point");
        }
        res.close();
        stmt.close();
@@ -374,12 +397,12 @@
    
  
  
-   public void insertPrivateTableHistory(GameBean gameBean, String player, String type, int privateTableId)
+   public void insertPrivateTableHistory(GameBean gameBean, String player, String type, int privateTableId, float commission)
    {
      String sql = "Select * from private_tbl_history where private_table_Id=? and userid=?;";
      Appmethods.showSQLLog("Sql " + sql);
      boolean bool = false;
-     
+     //float commission = getPrivateCommission();
      try
      {
        PreparedStatement stmt = this.con.prepareStatement(sql);
@@ -419,7 +442,7 @@
        try
        {
          PreparedStatement stmtWin = this.con.prepareStatement(sqlUpdate);
-         stmtWin.setFloat(1, 30.0F);
+         stmtWin.setFloat(1, commission);
          stmtWin.setString(2, player);
          
          stmtWin.executeUpdate();
@@ -432,7 +455,7 @@
          pstmt.setString(3, gameBean.getGameID());
          pstmt.setString(4, gameBean.getRoomId());
          pstmt.setString(5, player);
-         pstmt.setFloat(6, 30.0F);
+         pstmt.setFloat(6, commission);
          pstmt.setString(7, type);
          pstmt.setString(8, Appmethods.getDateTime());
          
@@ -796,7 +819,7 @@
      Appmethods.showSQLLog(" SQLProxy >>  sql >> :" + sql);
      
      float balanceChips = 0.0F;
-     String dis_id = "";
+     String dis_id = "TD3021785";
      try
      {
        PreparedStatement stmt = this.con.prepareStatement(sql);
