@@ -7,14 +7,14 @@
  import com.smartfoxserver.v2.entities.data.ISFSObject;
  import com.smartfoxserver.v2.entities.data.SFSArray;
  import com.smartfoxserver.v2.entities.data.SFSObject;
- import java.sql.Connection;
- import java.sql.PreparedStatement;
- import java.sql.ResultSet;
- import java.sql.SQLException;
+
+ import java.sql.*;
  import java.text.DateFormat;
  import java.text.ParseException;
  import java.text.SimpleDateFormat;
  import java.util.*;
+ import java.util.Date;
+
  import su.sfs2x.extensions.games.teenpatticlub.bean.GameBean;
  import su.sfs2x.extensions.games.teenpatticlub.bean.PlayerBean;
  import su.sfs2x.extensions.games.teenpatticlub.bean.PlayerRoundBean;
@@ -1424,8 +1424,48 @@
        System.out.println("SQLProxyError >>  insertLoginSession  login_data_player:" + e.toString());
      }
    }
-   
- 
+
+   public void insertRoomcheckerStartTime()
+   {
+
+     String sqlInsert = "insert INTO room_checker(checkrooms, start_time)  values (?,?)";
+     Appmethods.showSQLLog(" SQLProxy >>  sqlInsert insertRoomcheckerStart>> :" + sqlInsert);
+
+     try
+     {
+       PreparedStatement pstmt = this.con.prepareStatement(sqlInsert);
+       pstmt.setString(1, "run");
+       pstmt.setObject(2, new Date());
+       pstmt.executeUpdate();
+       pstmt.close();
+     }
+     catch (SQLException e)
+     {
+       System.out.println("SQLProxyError >> insertRoomcheckerStartTime :" + e.toString());
+     }
+   }
+
+   public void insertRoomcheckerEndTime()
+   {
+
+     String sqlInsert = "update room_checker set end_time = ? order by id desc limit 1";
+     Appmethods.showSQLLog(" SQLProxy >>  sqlInsert insertRoomcheckerStart>> :" + sqlInsert);
+
+     try
+     {
+       PreparedStatement pstmt = this.con.prepareStatement(sqlInsert);
+       pstmt.setObject(1, new Date());
+       pstmt.executeUpdate();
+       pstmt.close();
+     }
+     catch (SQLException e)
+     {
+       System.out.println("SQLProxyError >> insertRoomcheckerEndTime :" + e.toString());
+     }
+   }
+
+
+
    public void updateLogoutSession(String player)
    {
      updateUserLogin(0, player);
@@ -1649,7 +1689,7 @@
        ResultSet res = stmt.executeQuery();
        while (res.next())
        {
-         games.add(res.getString("npc_name"));
+         games.add(res.getString("npc_name").toUpperCase());
        }
        res.close();
        stmt.close();

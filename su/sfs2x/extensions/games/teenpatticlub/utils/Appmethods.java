@@ -38,7 +38,7 @@
    }
    
    public static String generateGameID() {
-     DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+     DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmssSS");
      Calendar cal = Calendar.getInstance();
      return "TP_" + dateFormat.format(cal.getTime());
    }

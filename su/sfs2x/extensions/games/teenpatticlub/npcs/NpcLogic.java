@@ -131,7 +131,7 @@ public class NpcLogic {
             sfso1.putUtfString("command", "Chall");
             sfso1.putInt("amount", gameBean.getGameRoundBean().getChallBet());
             ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-            executor.schedule(new DelayedChaal(player, sfso1, gameBean), 13+rand.nextInt(18), TimeUnit.SECONDS);
+            executor.schedule(new DelayedChaal(player, sfso1, gameBean), 13+rand.nextInt(13), TimeUnit.SECONDS);
             executor.shutdown();
     }
 
@@ -141,7 +141,7 @@ public class NpcLogic {
                 sfso1.putUtfString("command", "Blind");
                 sfso1.putInt("amount", gameBean.getGameRoundBean().getBlindBet());
                 ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-                executor.schedule(new DelayedBlind(player, sfso1, gameBean), 13+rand.nextInt(18), TimeUnit.SECONDS);
+                executor.schedule(new DelayedBlind(player, sfso1, gameBean), 13+rand.nextInt(13), TimeUnit.SECONDS);
                 executor.shutdown();
             }
     }
@@ -163,7 +163,7 @@ public class NpcLogic {
         sfso1 = new SFSObject();
         sfso1.putUtfString("command", "Pack");
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.schedule(new DelayedPack(player, sfso1, gameBean), 13+rand.nextInt(18), TimeUnit.SECONDS);
+        executor.schedule(new DelayedPack(player, sfso1, gameBean), 13+rand.nextInt(13), TimeUnit.SECONDS);
         executor.shutdown();
 
     }
@@ -176,7 +176,7 @@ public class NpcLogic {
             sfso1.putUtfString("command", "Show");
             sfso1.putInt("amount", gameBean.getGameRoundBean().getBlindBet());
             ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-            executor.schedule(new DelayedShow(player, sfso1, gameBean), 13+rand.nextInt(18), TimeUnit.SECONDS);
+            executor.schedule(new DelayedShow(player, sfso1, gameBean), 13+rand.nextInt(13), TimeUnit.SECONDS);
             executor.shutdown();
 
     }

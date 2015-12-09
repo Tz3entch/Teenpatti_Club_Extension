@@ -1,7 +1,10 @@
 package su.sfs2x.extensions.games.teenpatticlub.npcs;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
+import com.smartfoxserver.v2.SmartFoxServer;
 import com.smartfoxserver.v2.api.SFSApi;
 import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.User;
@@ -17,6 +20,7 @@ import su.sfs2x.extensions.games.teenpatticlub.bsn.UpdateLobbyBsn;
 import su.sfs2x.extensions.games.teenpatticlub.constants.Commands;
 import su.sfs2x.extensions.games.teenpatticlub.main.Main;
 import su.sfs2x.extensions.games.teenpatticlub.timers.CheckRoomTimer;
+import su.sfs2x.extensions.games.teenpatticlub.timers.TaskRunner;
 import su.sfs2x.extensions.games.teenpatticlub.utils.Appmethods;
 
 
@@ -28,7 +32,7 @@ public class NPCManager {
     private LinkedList<String> unusedNpcNames;
     private HashMap<String, Integer> settings;
     private Integer [] ar = {2,3,1,2,3,1,5,2,1,4,3,1,2};
-//  private Integer [] ar =   {5,0,0,0,0,0,0,0,0,0,0,0,0};
+////  private Integer [] ar =   {5,0,0,0,0,0,0,0,0,0,0,0,0};
     private String[] arNames = {"Addison", "Ashley", "Ashton", "Avery", "Bailey", "Cameron", "Carson",
                         "Carter", "Casey", "Corey", "Dakota", "Devin", "Drew", "Emerson",
                         "Harley", "Harper", "Hayden", "Hunter", "Jaiden", "Jamie", "Jaylen",
@@ -37,6 +41,7 @@ public class NPCManager {
                         "Morgan", "Parker", "Peyton", "Piper", "Quinn", "Reagan", "Reese",
                         "Riley", "Rowan", "Ryan", "Shane", "Shawn", "Sydney", "Taylor",
                         "Tristan"};
+    ScheduledFuture<?> taskHandle;
 
 
 
@@ -54,8 +59,10 @@ public class NPCManager {
         Collections.shuffle(npcsForRoom, rand);
         Collections.shuffle((List)unusedNpcNames, rand);
         FillRooms();
-        Timer timer = new Timer();
-        timer.schedule(new CheckRoomTimer(this), settings.get("delay"), settings.get("period"));
+//        Timer timer = new Timer();
+//        timer.schedule(new CheckRoomTimer(this), settings.get("delay"), settings.get("period"));
+        SmartFoxServer sfs = Commands.appInstance.sfs;
+        taskHandle = sfs.getTaskScheduler().scheduleAtFixedRate(new CheckRoomTimer(this), settings.get("delay"), settings.get("period"), TimeUnit.MILLISECONDS);
     }
 
     private int getNpcsNumber() {
@@ -265,6 +272,7 @@ public class NPCManager {
     public void checkRooms() {
         Appmethods.showLog("*****************************CHECKROOMS STARTED**************************************");
         System.out.println("*****CHECKROOMS STARTED****");
+        app.proxy.insertRoomcheckerStartTime();
         GameBean gameBean = null;
         Room room = null;
         TableBean tableBean;
@@ -380,6 +388,7 @@ public class NPCManager {
                 Appmethods.showLog("********** NPCManager: npc " + name + " removed! Reason: Not a player!************");
             }
         }
+        app.proxy.insertRoomcheckerEndTime();
         Appmethods.showLog("*****************************CHECKROOMS ENDED**************************************");
     }
 }
