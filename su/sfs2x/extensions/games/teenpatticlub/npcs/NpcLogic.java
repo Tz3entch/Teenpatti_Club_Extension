@@ -32,8 +32,10 @@ public class NpcLogic {
     private ISFSObject sfso1;
     private String wonReason;
     private int rank;
-    public NpcLogic(GameBean gameBean) {
+    private int delay;
+    public NpcLogic(GameBean gameBean, int delay) {
         this.gameBean = gameBean;
+        this.delay = delay;
         player = gameBean.getGameRoundBean().getTurn();
         room = Appmethods.getRoomByName(gameBean.getRoomId());
         user = room.getUserByName(player);
@@ -45,14 +47,17 @@ public class NpcLogic {
             User wonUser = findWonUser(gameBean);
             Appmethods.showLog("BEST COMBO: "+ wonUser.getName()+" REASON: " + wonReason);
             if (!wonUser.isNpc()) {
-                switch (rand.nextInt(4)) {
-                    case 0: pack();
-                        break;
-                    case 1: blind();
-                        break;
-                    case 2: showPack();
-                        break;
-                    case 3: showBlind();
+                if (!prb.isSeen()) {
+                    switch (rand.nextInt(2)) {
+                        case 0:
+                            showPackChaal();
+                            break;
+                        case 1:
+                            blind();
+
+                    }
+                } else {
+                    showPackChaal();
                 }
             } else if (user.getName().equals(wonUser.getName())) {
                 if (!prb.isSeen()) {
@@ -102,11 +107,35 @@ public class NpcLogic {
         }
     }
 
-    private void showPack() {
-        if (activePlayers() == 2) {
-            show();
-        } else {
+    private void showPackChaal() {
+        if ((activePlayers() > 2) ) {
             pack();
+        } else if ( rank == 1 &&(activePlayers() == 2 && gameBean.getGameRoundBean().getHandNo() > rand.nextInt(4) + 5) ) {
+            switch (rand.nextInt(2)) {
+                case 0: pack();
+                    break;
+                case 1: show();
+            }
+        } else if (rank == 5 && (activePlayers() == 2 && gameBean.getGameRoundBean().getHandNo() > rand.nextInt(3) + 2) ) {
+            switch (rand.nextInt(2)) {
+                case 0: pack();
+                    break;
+                case 1: show();
+            }
+        } else if ((rank > 1 && rank < 5)&&(activePlayers() == 2 && gameBean.getGameRoundBean().getHandNo() > rand.nextInt(3) + 3) ) {
+            switch (rand.nextInt(2)) {
+                case 0: pack();
+                    break;
+                case 1: show();
+            }
+        } else if ((rank == 6)&&(activePlayers() == 2) ) {
+            switch (rand.nextInt(2)) {
+                case 0: pack();
+                    break;
+                case 1: show();
+            }
+        } else {
+            chaal();
         }
     }
 
@@ -131,7 +160,7 @@ public class NpcLogic {
             sfso1.putUtfString("command", "Chall");
             sfso1.putInt("amount", gameBean.getGameRoundBean().getChallBet());
             ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-            executor.schedule(new DelayedChaal(player, sfso1, gameBean), 13+rand.nextInt(13), TimeUnit.SECONDS);
+            executor.schedule(new DelayedChaal(player, sfso1, gameBean), 5+rand.nextInt(4)+delay, TimeUnit.SECONDS);
             executor.shutdown();
     }
 
@@ -141,7 +170,7 @@ public class NpcLogic {
                 sfso1.putUtfString("command", "Blind");
                 sfso1.putInt("amount", gameBean.getGameRoundBean().getBlindBet());
                 ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-                executor.schedule(new DelayedBlind(player, sfso1, gameBean), 13+rand.nextInt(13), TimeUnit.SECONDS);
+                executor.schedule(new DelayedBlind(player, sfso1, gameBean), 3+rand.nextInt(6)+delay, TimeUnit.SECONDS);
                 executor.shutdown();
             }
     }
@@ -150,7 +179,7 @@ public class NpcLogic {
             sfso1 = new SFSObject();
             sfso1.putUtfString("command", "Seen");
             ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-            executor.schedule(new DelayedSeen(player, sfso1, gameBean), 8+rand.nextInt(5), TimeUnit.SECONDS);
+            executor.schedule(new DelayedSeen(player, sfso1, gameBean), 2+rand.nextInt(4)+delay, TimeUnit.SECONDS);
             executor.shutdown();
 
 
@@ -163,7 +192,7 @@ public class NpcLogic {
         sfso1 = new SFSObject();
         sfso1.putUtfString("command", "Pack");
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.schedule(new DelayedPack(player, sfso1, gameBean), 13+rand.nextInt(13), TimeUnit.SECONDS);
+        executor.schedule(new DelayedPack(player, sfso1, gameBean), 3+rand.nextInt(4)+delay, TimeUnit.SECONDS);
         executor.shutdown();
 
     }
@@ -176,7 +205,7 @@ public class NpcLogic {
             sfso1.putUtfString("command", "Show");
             sfso1.putInt("amount", gameBean.getGameRoundBean().getBlindBet());
             ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-            executor.schedule(new DelayedShow(player, sfso1, gameBean), 13+rand.nextInt(13), TimeUnit.SECONDS);
+            executor.schedule(new DelayedShow(player, sfso1, gameBean), 8+rand.nextInt(13)+delay, TimeUnit.SECONDS);
             executor.shutdown();
 
     }

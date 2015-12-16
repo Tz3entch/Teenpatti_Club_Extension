@@ -375,7 +375,7 @@ public class ActionsBsn {
         gameBean.startTimer(61, "Turn");
 
 
-        NpcLogic npcl = new NpcLogic(gameBean);
+        NpcLogic npcl = new NpcLogic(gameBean, 0);
         npcl.performNpcTurn();
 
     }

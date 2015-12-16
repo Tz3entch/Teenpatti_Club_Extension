@@ -98,6 +98,14 @@ public class NPCManager {
 //		}
     }
 
+    private void printQuery() {
+        String g = "";
+        for (String s: unusedNpcNames) {
+            g+=s+", ";
+        }
+        Appmethods.showLog("Query:"+ g );
+    }
+
     private void joinNpcToRoom(User npcUser, int tableId, int pos) throws SFSException {
         String player = npcUser.getName();
         String type = "Public";
@@ -286,7 +294,7 @@ public class NPCManager {
             room = Appmethods.getRoomByName(gameBean.getRoomId());
 
             if (gameBean.getPlayerBeenList().size() > 1 && (!gameBean.getGameRoundBean().getTurn().equals("null")) && room != null) {
-                NpcLogic npcLogic = new NpcLogic(gameBean);
+                NpcLogic npcLogic = new NpcLogic(gameBean, 0);
                 List<User> npcs = npcsInRoom(room);
                 if (getActivePlayers(gameBean)>=gameBean.getMaxNoOfPlayers()&& npcs.size() > 0) {
                     int n = rand.nextInt(npcs.size());
@@ -333,10 +341,12 @@ public class NPCManager {
                                 Commands.appInstance.getApi().disconnectUser(npc);/////////
                                 gameBean.getPlayerBeenList().get(npc.getName()).setActive(false);
                                 Appmethods.showLog("********** NPCManager: npc " + npc.getName() + " removed! Reason: Played enough hands!************");
+                                printQuery();
                                 unusedNpcNames.addLast(npc.getName());
                                // app.cdUser.removeConnectedUser(npc);
                                 iterator.remove();
                                 System.out.println("*****NPC REMOVED****");
+                                printQuery();
 
                                 try {
                                     User npcUser = app.getApi().createNPC(unusedNpcNames.removeFirst(), app.getParentZone(), true);
@@ -352,6 +362,7 @@ public class NPCManager {
                                         //Appmethods.updateGameBeanUpdateLobby(gameBean, room);
                                         Appmethods.showLog("********** NPCManager: npc " + npcUser.getName() + " added! Reason: To replace removed npc ************");
                                         System.out.println("*****NPC ADDED****");
+                                        printQuery();
                                     }
                                 } catch (SFSException e) {
                                     e.printStackTrace();
