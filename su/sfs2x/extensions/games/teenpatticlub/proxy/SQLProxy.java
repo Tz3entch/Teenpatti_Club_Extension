@@ -1449,7 +1449,7 @@
    {
 
      String sqlInsert = "update room_checker set end_time = ? order by id desc limit 1";
-     Appmethods.showSQLLog(" SQLProxy >>  sqlInsert insertRoomcheckerStart>> :" + sqlInsert);
+     Appmethods.showSQLLog(" SQLProxy >>  sqlInsert insertRoomcheckerEnd>> :" + sqlInsert);
 
      try
      {
@@ -1461,6 +1461,26 @@
      catch (SQLException e)
      {
        System.out.println("SQLProxyError >> insertRoomcheckerEndTime :" + e.toString());
+     }
+   }
+
+   public void insertRoomcheckerActions(String actions)
+   {
+
+     String sqlInsert = "update room_checker set rc_description = ? order by id desc limit 1";
+     Appmethods.showSQLLog(" SQLProxy >>  sqlInsert insertRoomcheckerActions>> :" + sqlInsert);
+
+     try
+     {
+       PreparedStatement pstmt = this.con.prepareStatement(sqlInsert);
+       pstmt.setObject(1, actions);
+       pstmt.executeUpdate();
+       pstmt.close();
+     }
+
+     catch (SQLException e)
+     {
+       System.out.println("SQLProxyError >> insertRoomcheckerActions :" + e.toString());
      }
    }
 
